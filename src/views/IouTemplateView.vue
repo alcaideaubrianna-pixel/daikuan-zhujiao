@@ -20,8 +20,10 @@ import PageNav from '../components/PageNav.vue'
       </van-tab>
     </van-tabs>
     <van-notice-bar wrapable left-icon="info-o" text="本模板仅供材料展示参考，不代表法律意见或放款承诺。" />
-    <van-button class="fixed-cta" round block type="primary" icon="down" @click="showToast('模板已模拟保存')">
-      保存模板
-    </van-button>
+    <BottomActionBar>
+      <van-button round block type="primary" icon="down" @click="showToast('模板已模拟保存')">
+        保存模板
+      </van-button>
+    </BottomActionBar>
   </main>
 </template>

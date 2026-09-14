@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppTabbar: typeof import('./src/components/AppTabbar.vue')['default']
     BillCard: typeof import('./src/components/BillCard.vue')['default']
+    BottomActionBar: typeof import('./src/components/BottomActionBar.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     PageNav: typeof import('./src/components/PageNav.vue')['default']
     PrototypeNotice: typeof import('./src/components/PrototypeNotice.vue')['default']
