@@ -1,7 +1,22 @@
 <script setup lang="ts">
-import { showToast } from 'vant'
+import { showImagePreview, showSuccessToast } from 'vant'
 import iouTemplateUrl from '../assets/iou-template.png'
 import PageNav from '../components/PageNav.vue'
+
+const previewTemplate = () => showImagePreview({
+  images: [iouTemplateUrl],
+  closeable: true,
+  closeOnPopstate: true,
+  maxZoom: 5,
+})
+
+const saveTemplate = () => {
+  const link = document.createElement('a')
+  link.href = iouTemplateUrl
+  link.download = '借条参考模板.png'
+  link.click()
+  showSuccessToast('模板图片已保存')
+}
 </script>
 
 <template>
@@ -9,9 +24,10 @@ import PageNav from '../components/PageNav.vue'
     <PageNav title="借条参考模板" />
     <van-tabs color="#2563eb">
       <van-tab title="图片模板">
-        <figure class="template-paper">
+        <button class="template-paper" type="button" aria-label="放大查看借条参考模板" @click="previewTemplate">
           <img :src="iouTemplateUrl" alt="借条参考模板" />
-        </figure>
+          <span class="template-zoom"><van-icon name="expand-o" /> 点击放大</span>
+        </button>
       </van-tab>
       <van-tab title="视频示例">
         <van-empty image="network" description="视频模板为原型占位">
@@ -21,7 +37,7 @@ import PageNav from '../components/PageNav.vue'
     </van-tabs>
     <van-notice-bar wrapable left-icon="info-o" text="本模板仅供材料展示参考，不代表法律意见或放款承诺。" />
     <BottomActionBar>
-      <van-button round block type="primary" icon="down" @click="showToast('模板已模拟保存')">
+      <van-button round block type="primary" icon="down" @click="saveTemplate">
         保存模板
       </van-button>
     </BottomActionBar>
