@@ -6,9 +6,12 @@ export const loans: Loan[] = [
 ]
 export const money=(n:number)=>`¥${n.toLocaleString('zh-CN',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2})}`
 export const certifications = [
+  { key:'iou',title:'借条材料',desc:'上传借条照片或视频',icon:'description-o',required:true },
+  { key:'income',title:'收入证明',desc:'工资或经营流水，任选一项',icon:'balance-list-o',required:true },
+  { key:'debt',title:'负债信息',desc:'如实上传现有负债证明',icon:'bill-o',required:true },
   { key:'identity',title:'身份认证',desc:'身份证信息核验',icon:'idcard',required:true },
   { key:'face',title:'人脸核身',desc:'确认由本人完成申请',icon:'scan',required:true },
   { key:'personal',title:'个人信息',desc:'学历、职业及居住信息',icon:'contact',required:true },
-  { key:'contact',title:'联系人认证',desc:'填写两位紧急联系人',icon:'friends-o',required:true },
+  { key:'contact',title:'联系人认证',desc:'填写 1 位亲属和 2 位朋友',icon:'friends-o',required:true },
   { key:'bank',title:'收款银行卡',desc:'用于接收借款资金',icon:'card',required:true },
 ]
