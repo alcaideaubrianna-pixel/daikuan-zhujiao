@@ -10,6 +10,7 @@ const router = createRouter({
     { path: '/auth', component: () => import('../views/AuthCenterView.vue') },
     { path: '/materials/:type', component: () => import('../views/MaterialUploadView.vue') },
     { path: '/iou-template', component: () => import('../views/IouTemplateView.vue') },
+    { path: '/document-template/:type', component: () => import('../views/DocumentTemplateView.vue') },
     { path: '/identity', component: () => import('../views/IdentityView.vue') },
     { path: '/face-auth', component: () => import('../views/FaceAuthView.vue') },
     { path: '/profile-auth/:step', component: () => import('../views/ProfileAuthView.vue') },

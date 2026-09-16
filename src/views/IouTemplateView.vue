@@ -36,6 +36,12 @@ const saveTemplate = () => {
       </van-tab>
     </van-tabs>
     <van-notice-bar wrapable left-icon="info-o" text="本模板仅供材料展示参考，不代表法律意见或放款承诺。" />
+    <section class="original-template-list">
+      <h2>空白原模板</h2>
+      <p>不带填写内容，可在线查看或下载 Word 文件</p>
+      <van-cell title="借条原模板" label="借款金额、期限及双方签字栏" value="查看" icon="description-o" clickable is-link to="/document-template/iou" />
+      <van-cell title="借款免责协议原模板" label="双方责任及签字信息栏" value="查看" icon="shield-o" clickable is-link to="/document-template/disclaimer" />
+    </section>
     <BottomActionBar>
       <van-button round block type="primary" icon="down" @click="saveTemplate">
         保存模板
