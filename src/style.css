@@ -28,6 +28,16 @@
 html, body, #app { min-height: 100%; }
 body { margin: 0; background: #e9edf5; }
 a { color: inherit; text-decoration: none; }
+.van-toast,
+.van-popup.van-toast {
+  color: #fff !important;
+  background: rgba(23, 32, 51, .94) !important;
+  border: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: 0 8px 24px rgba(23, 32, 51, .24);
+}
+.van-toast__text,
+.van-toast__icon,
+.van-toast__loading { color: #fff !important; }
 .app-shell { width: 100%; max-width: 480px; min-height: 100vh; margin: 0 auto; background: var(--page); }
 .page { min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 0; }
 .van-cell-group--inset { margin: 14px 16px; }
@@ -104,6 +114,9 @@ a { color: inherit; text-decoration: none; }
 .upload-panel > p { margin: 0 0 14px; color: var(--muted); font-size: 11px; }
 .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .id-grid .van-uploader, .id-grid .van-uploader__wrapper { width: 100%; }
+.id-upload-item { min-width: 0; text-align: center; }
+.id-upload-item > span { display: block; margin-top: 7px; color: var(--muted); font-size: 11px; }
+.id-upload-item .van-uploader__preview, .id-upload-item .van-uploader__preview-image { width: 100%; height: 104px; margin: 0; }
 .id-placeholder { height: 104px; display: grid; place-content: center; gap: 7px; width: 100%; border: 1px dashed #b9c5d8; border-radius: 8px; color: var(--muted); text-align: center; background: white; }
 .id-placeholder .van-icon { color: var(--brand); font-size: 25px; }
 .id-placeholder b { font-size: 11px; }

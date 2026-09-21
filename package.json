@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "pnpm --dir daikuan-app dev",
+    "dev:h5:legacy": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },

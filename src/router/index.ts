@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useLoanStore } from '../stores/loan'
+import { AUTH_EXPIRED_EVENT } from '../api/client'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -31,11 +32,22 @@ const router = createRouter({
   scrollBehavior: () => ({ top: 0 }),
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const store = useLoanStore()
   if (!store.loggedIn && !['/login'].includes(to.path)) return '/login'
   if (store.loggedIn && to.path === '/login') return '/home'
+  if (store.loggedIn && !store.user) {
+    try { await store.hydrate() } catch { store.logout(); return '/login' }
+  }
   if (to.path === '/loan' && !store.certified) return '/auth'
+})
+
+window.addEventListener(AUTH_EXPIRED_EVENT, () => {
+  const store = useLoanStore()
+  store.logout()
+  if (router.currentRoute.value.path !== '/login') {
+    router.replace({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } })
+  }
 })
 
 export default router
