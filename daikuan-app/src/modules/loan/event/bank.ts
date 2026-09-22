@@ -93,7 +93,7 @@ export class LoanBankEvent {
   @Inject()
   logger;
 
-  @Event('onServerReadyOnce')
+  @Event('onServerReady')
   async seedBanks() {
     if (!(await this.bankRepo.count())) {
       await this.bankRepo.insert(
