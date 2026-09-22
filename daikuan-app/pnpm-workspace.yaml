@@ -1,0 +1,7 @@
+packages:
+  - 'web/*'
+
+onlyBuiltDependencies:
+  - sqlite3
+  - esbuild
+  - msgpackr-extract

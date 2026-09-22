@@ -1,0 +1,4 @@
+<template><cl-crud ref="Crud"><cl-row><cl-refresh-btn/><cl-flex1/><cl-search-key placeholder="搜索手机号、银行或卡号"/></cl-row><cl-row><cl-table ref="Table"/></cl-row><cl-row><cl-flex1/><cl-pagination/></cl-row></cl-crud></template>
+<script setup lang="ts">
+import{useCrud,useTable}from'@cool-vue/crud';import{useCool}from'/@/cool';defineOptions({name:'loan-user-bank-card'});const{service}=useCool();const Table=useTable({columns:[{label:'手机号',prop:'phone',minWidth:130},{label:'银行',prop:'bankName',minWidth:180},{label:'银行编码',prop:'bankCode',width:120},{label:'银行卡号',prop:'cardNo',minWidth:190},{label:'默认卡',prop:'isDefault',width:90,dict:[{label:'否',value:0},{label:'是',value:1,type:'success'}]},{label:'状态',prop:'status',width:90,dict:[{label:'停用',value:0,type:'danger'},{label:'正常',value:1,type:'success'}]},{label:'绑定时间',prop:'createTime',minWidth:170}]});const Crud=useCrud({service:(service as any).loan.userBankCard},app=>app.refresh());
+</script>

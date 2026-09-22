@@ -1,0 +1,56 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import { useLoanStore } from '../stores/loan'
+import { AUTH_EXPIRED_EVENT } from '../api/client'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', redirect: '/login' },
+    { path: '/home', component: () => import('../views/HomeView.vue') },
+    { path: '/login', component: () => import('../views/LoginView.vue') },
+    { path: '/auth', component: () => import('../views/AuthCenterView.vue') },
+    { path: '/materials/:type', component: () => import('../views/MaterialUploadView.vue') },
+    { path: '/iou-template', component: () => import('../views/IouTemplateView.vue') },
+    { path: '/document-template/:type', component: () => import('../views/DocumentTemplateView.vue') },
+    { path: '/identity', component: () => import('../views/IdentityView.vue') },
+    { path: '/face-auth', component: () => import('../views/FaceAuthView.vue') },
+    { path: '/profile-auth/:step', component: () => import('../views/ProfileAuthView.vue') },
+    { path: '/credit-result', component: () => import('../views/CreditResultView.vue') },
+    { path: '/loan', component: () => import('../views/CreateBillView.vue') },
+    { path: '/contract', component: () => import('../views/ContractView.vue') },
+    { path: '/application/:id', component: () => import('../views/ApplicationView.vue') },
+    { path: '/review-progress', component: () => import('../views/ReviewProgressView.vue') },
+    { path: '/funding-detail', component: () => import('../views/FundingDetailView.vue') },
+    { path: '/bills', component: () => import('../views/BillsView.vue') },
+    { path: '/bill/:id', component: () => import('../views/BillDetailView.vue') },
+    { path: '/repay/:id', component: () => import('../views/RepayView.vue') },
+    { path: '/messages', component: () => import('../views/MessagesView.vue') },
+    { path: '/bank-cards', component: () => import('../views/BankCardsView.vue') },
+    { path: '/content/:key', component: () => import('../views/ContentView.vue') },
+    { path: '/support', component: () => import('../views/SupportChatView.vue') },
+    { path: '/profile', component: () => import('../views/ProfileView.vue') },
+    { path: '/:pathMatch(.*)*', redirect: '/login' },
+  ],
+  scrollBehavior: () => ({ top: 0 }),
+})
+
+router.beforeEach(async (to) => {
+  const store = useLoanStore()
+  if (!store.loggedIn && !['/login'].includes(to.path)) return '/login'
+  if (store.loggedIn && to.path === '/login') return '/home'
+  if (store.loggedIn && !store.user) {
+    try { await store.hydrate() } catch { store.logout(); return '/login' }
+  }
+  if (to.path === '/loan' && !store.certified) return '/auth'
+  if (to.path === '/loan' && ['manual','phone','funding'].includes(store.currentApplication?.status || '')) return '/review-progress'
+})
+
+window.addEventListener(AUTH_EXPIRED_EVENT, () => {
+  const store = useLoanStore()
+  store.logout()
+  if (router.currentRoute.value.path !== '/login') {
+    router.replace({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } })
+  }
+})
+
+export default router

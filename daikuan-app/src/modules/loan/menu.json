@@ -1,0 +1,103 @@
+[
+  {
+    "name": "借款管理",
+    "router": "/loan",
+    "perms": null,
+    "type": 0,
+    "icon": "icon-wallet",
+    "orderNum": 5,
+    "viewPath": null,
+    "keepAlive": true,
+    "isShow": true,
+    "childMenus": [
+      {
+        "name": "审批列表",
+        "router": "/loan/applications",
+        "perms": null,
+        "type": 1,
+        "icon": "icon-task",
+        "orderNum": 1,
+        "viewPath": "modules/loan/views/applications.vue",
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+          { "name": "查询", "router": null, "perms": "loan:application:page,loan:application:list,loan:application:info,loan:application:detail", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "审批", "router": null, "perms": "loan:application:review", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      },
+      {
+        "name": "银行管理",
+        "router": "/loan/bank",
+        "perms": null,
+        "type": 1,
+        "icon": "icon-bank-card",
+        "orderNum": 2,
+        "viewPath": "modules/loan/views/bank.vue",
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+          { "name": "新增", "router": null, "perms": "loan:bank:add", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "删除", "router": null, "perms": "loan:bank:delete", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "修改", "router": null, "perms": "loan:bank:update,loan:bank:info", "type": 2, "icon": null, "orderNum": 3, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "查询", "router": null, "perms": "loan:bank:page,loan:bank:list,loan:bank:info", "type": 2, "icon": null, "orderNum": 4, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      },
+      {
+        "name": "额度配置",
+        "router": "/loan/credit-config",
+        "perms": null,
+        "type": 1,
+        "icon": "icon-coin",
+        "orderNum": 3,
+        "viewPath": "modules/loan/views/credit-config.vue",
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+          { "name": "查询", "router": null, "perms": "loan:creditConfig:page,loan:creditConfig:list,loan:creditConfig:info", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "修改", "router": null, "perms": "loan:creditConfig:update", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      },
+      {
+        "name": "合同管理",
+        "router": "/loan/agreement",
+        "perms": null,
+        "type": 1,
+        "icon": "icon-file",
+        "orderNum": 4,
+        "viewPath": "modules/loan/views/agreement.vue",
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+          { "name": "新增", "router": null, "perms": "loan:agreement:add", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "删除", "router": null, "perms": "loan:agreement:delete", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "修改", "router": null, "perms": "loan:agreement:update,loan:agreement:info", "type": 2, "icon": null, "orderNum": 3, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "查询", "router": null, "perms": "loan:agreement:page,loan:agreement:list,loan:agreement:info", "type": 2, "icon": null, "orderNum": 4, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      }
+      ,{
+        "name": "消息管理", "router": "/loan/notification", "perms": null, "type": 1, "icon": "icon-notification", "orderNum": 5,
+        "viewPath": "modules/loan/views/notification.vue", "keepAlive": true, "isShow": true,
+        "childMenus": [
+          { "name": "新增", "router": null, "perms": "loan:notification:add", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "删除", "router": null, "perms": "loan:notification:delete", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "查询", "router": null, "perms": "loan:notification:page,loan:notification:list,loan:notification:info", "type": 2, "icon": null, "orderNum": 3, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      },
+      {
+        "name": "用户银行卡", "router": "/loan/user-bank-card", "perms": null, "type": 1, "icon": "icon-bank-card", "orderNum": 6,
+        "viewPath": "modules/loan/views/user-bank-card.vue", "keepAlive": true, "isShow": true,
+        "childMenus": [{ "name": "查询", "router": null, "perms": "loan:userBankCard:page,loan:userBankCard:list,loan:userBankCard:info", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }]
+      },
+      {
+        "name": "页面内容", "router": "/loan/page-content", "perms": null, "type": 1, "icon": "icon-file", "orderNum": 7,
+        "viewPath": "modules/loan/views/page-content.vue", "keepAlive": true, "isShow": true,
+        "childMenus": [
+          { "name": "新增", "router": null, "perms": "loan:pageContent:add", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "删除", "router": null, "perms": "loan:pageContent:delete", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "修改", "router": null, "perms": "loan:pageContent:update,loan:pageContent:info", "type": 2, "icon": null, "orderNum": 3, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "查询", "router": null, "perms": "loan:pageContent:page,loan:pageContent:list,loan:pageContent:info", "type": 2, "icon": null, "orderNum": 4, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      }
+    ]
+  }
+]
