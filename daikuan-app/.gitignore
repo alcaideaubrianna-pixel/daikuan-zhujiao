@@ -12,6 +12,9 @@ web/*/node_modules/
 .idea/
 run/
 build/
+!web/admin/build/
+!web/admin/build/cool/
+!web/admin/build/cool/eps.json
 .DS_Store
 launch.json
 *.sw*
