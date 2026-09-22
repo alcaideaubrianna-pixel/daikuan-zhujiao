@@ -2,9 +2,8 @@ name: kuaidai
 
 services:
   midway:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/alcaideaubrianna-pixel/kuaidai-midway:latest
+    pull_policy: always
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -32,9 +31,8 @@ services:
       start_period: 30s
 
   h5:
-    build:
-      context: ./web/h5
-      dockerfile: Dockerfile
+    image: ghcr.io/alcaideaubrianna-pixel/kuaidai-h5:latest
+    pull_policy: always
     restart: unless-stopped
     depends_on:
       midway:
@@ -43,9 +41,8 @@ services:
       - "80"
 
   admin:
-    build:
-      context: ./web/admin
-      dockerfile: Dockerfile
+    image: ghcr.io/alcaideaubrianna-pixel/kuaidai-admin:latest
+    pull_policy: always
     restart: unless-stopped
     depends_on:
       midway:
