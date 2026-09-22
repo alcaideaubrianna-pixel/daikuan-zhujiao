@@ -13,7 +13,7 @@ services:
       DB_SYNCHRONIZE: ${DB_SYNCHRONIZE:-true}
       COOL_INIT_DB: ${COOL_INIT_DB:-true}
       COOL_INIT_MENU: ${COOL_INIT_MENU:-true}
-      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:8001}
+      APP_BASE_URL: ${APP_BASE_URL:-http://daikuan-da-dxfnva-b6e7c2-47-76-188-168.sslip.io}
       COS_SECRET_ID: ${COS_SECRET_ID:-}
       COS_SECRET_KEY: ${COS_SECRET_KEY:-}
       COS_BUCKET: ${COS_BUCKET:-}
