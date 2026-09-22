@@ -21,7 +21,7 @@ launch.json
 data/*
 pnpm-lock.yaml
 !pnpm-lock.yaml
-web/*/pnpm-lock.yaml
+!web/*/pnpm-lock.yaml
 cool.sqlite
 src/index.ts
 public/uploads/*
