@@ -1,0 +1,23 @@
+[app]
+log_level = "info"
+env = "prod"
+encryption_key = "0123456789abcdef0123456789abcdef"
+[app.server]
+address = "0.0.0.0:9000"
+disable_secure_cookies = true
+[auth]
+local_login_enabled = true
+[upload]
+provider = "fs"
+[upload.fs]
+upload_path = "/libredesk/uploads"
+expiry = "1h"
+[db]
+host = "db"
+port = 5432
+user = "libredesk"
+password = "libredesk"
+database = "libredesk"
+ssl_mode = "disable"
+[redis]
+address = "redis:6379"

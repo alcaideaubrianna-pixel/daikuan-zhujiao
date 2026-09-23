@@ -29,6 +29,7 @@ const banks = ref<BankOption[]>([])
 const bankKeyword = ref('')
 const bankPopupVisible = ref(false)
 const bankLoading = ref(false)
+const customBankName = ref('')
 const loading = ref(false)
 
 const filteredBanks = computed(() => {
@@ -63,6 +64,13 @@ const selectBank = (bank: BankOption) => {
   bankKeyword.value = ''
 }
 
+const selectCustomBank = () => {
+  bankCode.value = 'CUSTOM'
+  bankName.value = customBankName.value.trim()
+  bankPopupVisible.value = false
+  bankKeyword.value = ''
+}
+
 const done = async () => {
   loading.value = true
   try {
@@ -74,7 +82,7 @@ const done = async () => {
           { name: friendOne.value, phone: friendOnePhone.value, relation: '朋友' },
           { name: friendTwo.value, phone: friendTwoPhone.value, relation: '朋友' },
         ] }
-        : { bankCode: bankCode.value, bankName: bankName.value, bankCardNo: card.value }
+        : { bankCode: bankCode.value, bankName: bankCode.value === 'CUSTOM' ? customBankName.value.trim() : bankName.value, bankCardNo: card.value }
     if (step.value === 'bank') {
       await api.saveBankCard(data)
       await store.hydrate()
@@ -98,6 +106,7 @@ onMounted(async () => {
     address.value = profile.address || address.value
     bankCode.value = profile.bankCode || ''
     bankName.value = profile.bankName || ''
+    customBankName.value = profile.bankCode === 'CUSTOM' ? (profile.bankName || '') : ''
     card.value = profile.bankCardNo || ''
     if (Array.isArray(profile.contacts)) {
       const [r, f1, f2] = profile.contacts
@@ -166,6 +175,7 @@ onMounted(async () => {
               :rules="[{ required: true, message: '请选择开户银行' }]"
               @click="openBankPopup"
             />
+            <van-field v-if="bankCode === 'CUSTOM'" v-model="customBankName" label="银行名称" placeholder="请输入银行名称" :rules="[{ required: true, message: '请输入银行名称' }]" @blur="bankName = customBankName.trim()" />
             <van-field v-model="card" maxlength="24" type="digit" label="银行卡号" placeholder="请输入本人银行卡号" :rules="[{ required: true, pattern: /^\d{12,24}$/, message: '请输入正确银行卡号' }]" />
           </van-cell-group>
         </div>
@@ -194,6 +204,9 @@ onMounted(async () => {
           <template #right-icon><van-icon v-if="bankCode === item.code" name="success" color="#0f9f8f" /></template>
         </van-cell>
         <van-empty v-if="!bankLoading && !filteredBanks.length" description="未找到匹配的银行" />
+        <van-cell title="其他银行（手动输入）" label="列表中没有你的开户银行" clickable @click="selectCustomBank">
+          <template #right-icon><van-icon v-if="bankCode === 'CUSTOM'" name="success" color="#0f9f8f" /></template>
+        </van-cell>
       </div>
     </van-popup>
   </main>

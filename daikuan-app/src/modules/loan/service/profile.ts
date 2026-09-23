@@ -139,18 +139,20 @@ export class LoanProfileService extends BaseService {
       }
       patch.contacts = data.contacts.slice(0, 3);
     } else if (step === 'bank') {
-      const bank = await this.bankRepo.findOneBy({
-        code: String(data.bankCode || ''),
+      const requestedBankCode = String(data.bankCode || '');
+      const customBankName = String(data.bankName || '').trim();
+      const bank = requestedBankCode === 'CUSTOM' ? null : await this.bankRepo.findOneBy({
+        code: requestedBankCode,
         status: 1,
       });
       if (
-        !bank ||
+        (!bank && !(requestedBankCode === 'CUSTOM' && customBankName)) ||
         !/^\d{12,24}$/.test(String(data.bankCardNo || ''))
       ) {
         throw new CoolCommException('请填写正确的开户银行和银行卡号');
       }
-      patch.bankCode = bank.code;
-      patch.bankName = bank.name;
+      patch.bankCode = bank?.code || 'CUSTOM';
+      patch.bankName = bank?.name || customBankName;
       patch.bankCardNo = String(data.bankCardNo);
     }
     const completed = Array.from(new Set([...(current.completed || []), step]));
