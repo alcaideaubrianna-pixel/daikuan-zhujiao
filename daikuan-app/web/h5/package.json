@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@advanced-chat/components": "3.0.0-rc.3",
     "pinia": "^4.0.3",
     "vant": "^4.10.2",
     "vue": "^3.5.41",

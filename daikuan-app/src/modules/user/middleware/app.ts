@@ -38,7 +38,41 @@ export class UserMiddleware implements IMiddleware<Context, NextFunction> {
       let { url } = ctx;
       url = url.replace(this.prefix, '').split('?')[0];
       if (_.startsWith(url, '/app/')) {
+        // Login, captcha and token refresh endpoints must be reachable before
+        // an access token exists. Keep these explicit as a fallback for
+        // deployments where CoolUrlTag metadata is not ready during startup.
+        const publicAuthUrl = [
+          '/app/user/login/mini',
+          '/app/user/login/mp',
+          '/app/user/login/wxApp',
+          '/app/user/login/phone',
+          '/app/user/login/uniPhone',
+          '/app/user/login/miniPhone',
+          '/app/user/login/captcha',
+          '/app/user/login/smsCode',
+          '/app/user/login/refreshToken',
+          '/app/user/login/password',
+          '/app/user/login/h5',
+          '/app/loan/support-public/public/messages',
+          '/app/loan/support-public/public/reply',
+          '/app/loan/support-public/public/upload',
+          '/app/loan/support-public/messages',
+          '/app/loan/support-public/reply',
+          '/app/loan/support-public/upload',
+          '/app/loan/public/messages',
+          '/app/loan/public/reply',
+          '/app/loan/public/upload',
+          '/app/loan/support/public/messages',
+          '/app/loan/support/public/reply',
+        ].includes(url);
         const token = ctx.get('Authorization');
+        const isIgnored = publicAuthUrl || this.ignoreUrls.some(pattern =>
+          this.utils.matchUrl(pattern, url)
+        );
+        if (isIgnored) {
+          await next();
+          return;
+        }
         try {
           ctx.user = jwt.verify(token, this.jwtConfig.secret);
 
@@ -46,18 +80,9 @@ export class UserMiddleware implements IMiddleware<Context, NextFunction> {
             throw new CoolCommException('登录失效~');
           }
         } catch (error) {}
-        // 使用matchUrl方法来检查URL是否应该被忽略
-        const isIgnored = this.ignoreUrls.some(pattern =>
-          this.utils.matchUrl(pattern, url)
-        );
-        if (isIgnored) {
-          await next();
-          return;
-        } else {
-          if (!ctx.user) {
-            ctx.status = 401;
-            throw new CoolCommException('登录失效~');
-          }
+        if (!ctx.user) {
+          ctx.status = 401;
+          throw new CoolCommException('登录失效~');
         }
       }
       await next();

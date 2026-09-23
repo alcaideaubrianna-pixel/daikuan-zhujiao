@@ -28,6 +28,7 @@ const router = createRouter({
     { path: '/bank-cards', component: () => import('../views/BankCardsView.vue') },
     { path: '/content/:key', component: () => import('../views/ContentView.vue') },
     { path: '/support', component: () => import('../views/SupportChatView.vue') },
+    { path: '/support/public', component: () => import('../views/PublicSupportView.vue') },
     { path: '/profile', component: () => import('../views/ProfileView.vue') },
     { path: '/:pathMatch(.*)*', redirect: '/login' },
   ],
@@ -36,7 +37,7 @@ const router = createRouter({
 
 router.beforeEach(async (to) => {
   const store = useLoanStore()
-  if (!store.loggedIn && !['/login'].includes(to.path)) return '/login'
+  if (!store.loggedIn && !['/login', '/support/public'].includes(to.path)) return '/login'
   if (store.loggedIn && to.path === '/login') return '/home'
   if (store.loggedIn && !store.user) {
     try { await store.hydrate() } catch { store.logout(); return '/login' }

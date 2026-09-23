@@ -1,26 +1,89 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { showToast } from 'vant'
-import PageNav from '../components/PageNav.vue'
+import { AdvancedChat, type ChatFileItem, type ChatModel, type MessageModel, type User } from '@advanced-chat/components'
 import { api } from '../api/client'
-interface Message { id:number;senderType:'staff'|'user'|'system';content:string;createTime:string }
-const input=ref(''),sending=ref(false),messages=ref<Message[]>([])
-const questions=['如何申请额度？','借款利息如何计算？','如何提前还款？']
-const libredeskUrl = String(import.meta.env.VITE_LIBREDESK_URL || '').replace(/\/$/, '')
-const libredeskInboxId = String(import.meta.env.VITE_LIBREDESK_INBOX_ID || '')
-let timer:number|undefined
-const load=async()=>{try{const lastId=messages.value.at(-1)?.id||0;const result=await api.supportMessages(lastId);if(result.messages.length)messages.value.push(...result.messages as Message[])}catch(error){if(!messages.value.length)showToast(error instanceof Error?error.message:'记录加载失败')}}
-const send=async(text=input.value.trim())=>{if(!text||sending.value)return;sending.value=true;try{const message=await api.sendSupportMessage(text);messages.value.push(message as Message);input.value=''}catch(error){showToast(error instanceof Error?error.message:'发送失败')}finally{sending.value=false}}
-onMounted(async()=>{
-  if (libredeskUrl && libredeskInboxId) {
-    ;(window as Window & { LibredeskSettings?: Record<string, unknown> }).LibredeskSettings = { baseURL: libredeskUrl, inboxID: libredeskInboxId }
-    await new Promise<void>(resolve => {
-      const script = document.createElement('script'); script.src = `${libredeskUrl}/widget.js`; script.async = true
-      script.onload = () => resolve(); script.onerror = () => resolve(); document.head.appendChild(script)
-    })
+import { useLoanStore } from '../stores/loan'
+
+interface ApiMessage { id: number; senderType: 'staff' | 'user' | 'system'; content: string; createTime: string; attachmentUrl?: string; attachmentType?: string; attachmentName?: string }
+interface SendPayload { content: string; files: ChatFileItem[] }
+
+const store = useLoanStore()
+const router = useRouter()
+const messages = ref<MessageModel[]>([])
+const loadingMessages = ref(false)
+const refreshing = ref(false)
+const sending = ref(false)
+const currentUser = computed<User>(() => ({ id: String(store.user?.id || 'me'), name: String(store.user?.nickName || store.user?.phone || '我'), avatar: store.user?.avatar, status: { state: 'online' } }))
+const supportUser: User = { id: 'support', name: '快贷客服', avatar: '/favicon.svg', status: { state: 'online' } }
+const chat = computed<ChatModel>(() => ({ id: 'support', name: '在线客服', users: [currentUser.value, supportUser] }))
+
+const toFile = (item: ApiMessage) => item.attachmentUrl ? [{ name: item.attachmentName || '附件', type: item.attachmentType === 'video' ? 'video/mp4' : 'image/*', extension: item.attachmentType || 'file', url: item.attachmentUrl, previewUrl: item.attachmentUrl, previewable: true }] : undefined
+const toMessage = (item: ApiMessage): MessageModel => ({ id: String(item.id), sender: item.senderType === 'user' ? currentUser.value : supportUser, content: item.content || undefined, createdAt: item.createTime || new Date().toISOString(), status: 'sent', files: toFile(item) })
+
+const loadMessages = async (silent = false) => {
+  if (refreshing.value) return
+  refreshing.value = true
+  if (!silent) loadingMessages.value = true
+  try {
+    const result = await api.supportMessages(0)
+    messages.value = (result.messages as ApiMessage[]).map(toMessage)
+  } catch (error) {
+    if (!silent) showToast(error instanceof Error ? error.message : '客服消息加载失败')
+  } finally {
+    refreshing.value = false
+    if (!silent) loadingMessages.value = false
   }
-  await load();timer=window.setInterval(load,5000)
+}
+
+const sendMessage = async ({ content, files }: SendPayload) => {
+  if ((!content?.trim() && !files?.length) || sending.value) return
+  sending.value = true
+  try {
+    let uploaded: { url: string; type: string; name: string } | undefined
+    const file = files?.[0]?.blob
+    if (file) uploaded = await api.uploadSupportFile(new File([file], files[0].name, { type: files[0].type }))
+    const message = await api.sendSupportMessage(content?.trim() || '', uploaded)
+    messages.value.push(toMessage(message as ApiMessage))
+  } catch (error) { showToast(error instanceof Error ? error.message : '发送失败') } finally { sending.value = false }
+}
+
+let refreshTimer: ReturnType<typeof setInterval> | undefined
+onMounted(async () => {
+  if (!store.user) { try { await store.hydrate() } catch {} }
+  await loadMessages()
+  refreshTimer = setInterval(() => loadMessages(true), 2000)
 })
-onUnmounted(()=>{if(timer)window.clearInterval(timer)})
+onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer) })
+const goBack = () => { if (window.history.state?.back) router.back(); else router.replace('/home') }
 </script>
-<template><main class="chat-page"><PageNav title="在线客服" right="记录"/><div class="service-status"><span class="online-dot"/> 客服工作时间 09:30-19:30</div><section class="chat-messages"><div v-if="!messages.length" class="chat-row agent"><div class="service-avatar"><van-icon name="service-o"/></div><div><p>您好，请留言说明您的问题，客服会在工作时间尽快回复。</p><span>工作时间 09:30-19:30</span></div></div><div v-for="item in messages" :key="item.id" :class="['chat-row',item.senderType==='user'?'user':'agent']"><div v-if="item.senderType!=='user'" class="service-avatar"><van-icon name="service-o"/></div><div><p>{{item.content}}</p><span>{{item.createTime}}</span></div></div></section><section class="quick-questions"><span>猜你想问</span><van-button v-for="q in questions" :key="q" size="small" round plain type="primary" @click="send(q)">{{q}}</van-button></section><van-action-bar class="chat-composer"><van-field v-model="input" clearable placeholder="请输入您的问题" @keyup.enter="send()"><template #left-icon><van-icon name="smile-o"/></template></van-field><van-button round type="primary" :loading="sending" :disabled="!input.trim()" @click="send()">发送</van-button></van-action-bar></main></template>
+
+<template>
+  <main class="chat-page advanced-chat-page" style="height:100dvh;overflow:hidden;position:relative">
+    <button type="button" aria-label="返回" style="position:absolute;z-index:20;top:52px;left:10px;width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#334155;box-shadow:0 2px 8px rgba(15,23,42,.12)" @click="goBack"><van-icon name="arrow-left" size="20" /></button>
+    <AdvancedChat
+        :current-user="currentUser"
+        :chats="[chat]"
+        :chat="chat"
+        :messages="messages"
+        :loading-messages="loadingMessages"
+        :messages-loaded="true"
+        :chats-loaded="true"
+        :show-chats="false"
+        :show-search="false"
+        :show-add-chat="false"
+        :show-files="true"
+        :show-emojis="false"
+        :show-reaction-emojis="false"
+        :show-footer="true"
+        :show-send-icon="true"
+        accept="image/*,video/*"
+        :multiple="false"
+        height="100dvh"
+        theme="light"
+        @send-message="sendMessage"
+        @fetch-messages="loadMessages"
+    />
+  </main>
+</template>

@@ -31,4 +31,7 @@ export class AdminLoanSupportController extends BaseController {
       )
     );
   }
+  @Post('/access-token', { summary: '生成客服分享链接令牌' }) async accessToken(@Body('conversationId') conversationId: number) {
+    return this.ok({ token: await this.loanSupportService.accessToken(Number(conversationId)) });
+  }
 }

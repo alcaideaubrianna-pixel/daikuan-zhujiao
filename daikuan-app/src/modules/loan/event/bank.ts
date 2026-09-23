@@ -10,6 +10,7 @@ import { LoanUserBankCardEntity } from '../entity/user-bank-card';
 import { LoanProfileEntity } from '../entity/profile';
 import { LoanNotificationEntity } from '../entity/notification';
 import { UserInfoEntity } from '../../user/entity/info';
+import { BaseSysMenuEntity } from '../../base/entity/sys/menu';
 
 const DEFAULT_AGREEMENTS = [
   {
@@ -90,11 +91,26 @@ export class LoanBankEvent {
   @InjectEntityModel(UserInfoEntity)
   userRepo: Repository<UserInfoEntity>;
 
+  @InjectEntityModel(BaseSysMenuEntity)
+  menuRepo: Repository<BaseSysMenuEntity>;
+
   @Inject()
   logger;
 
   @Event('onServerReady')
   async seedBanks() {
+    const loanMenu = await this.menuRepo.findOne({ where: [{ name: '借款管理' }, { name: '借款业务' }] });
+    if (loanMenu) {
+      const supportMenu = await this.menuRepo.findOneBy({ router: '/loan/support' });
+      const menuData = { parentId: loanMenu.id, name: '客服聊天', router: '/loan/support', type: 1, icon: 'ChatDotRound', viewPath: 'modules/loan/views/support.vue', orderNum: 90, keepAlive: false, isShow: true };
+      if (!supportMenu) {
+        await this.menuRepo.save(menuData);
+        this.logger.info('Initialized loan support admin menu');
+      } else if (supportMenu.viewPath !== menuData.viewPath || supportMenu.icon !== menuData.icon) {
+        await this.menuRepo.update(supportMenu.id, { viewPath: menuData.viewPath, icon: menuData.icon, parentId: loanMenu.id, isShow: true });
+        this.logger.info('Updated loan support admin menu');
+      }
+    }
     if (!(await this.bankRepo.count())) {
       await this.bankRepo.insert(
         DEFAULT_BANKS.map(([code, name, shortName], index) => ({

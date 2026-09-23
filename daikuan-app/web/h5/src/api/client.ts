@@ -86,5 +86,9 @@ export const api = {
   saveDraft: (data: Record<string, any>) => request<Record<string, any>>('/app/loan/application/draft', { method: 'POST', body: JSON.stringify(data) }),
   submitApplication: (id: number, agreementIds: number[]) => request<Record<string, any>>('/app/loan/application/submit', { method: 'POST', body: JSON.stringify({ id, agreementIds }) }),
   supportMessages: (afterId = 0) => request<{ conversation: Record<string, any>; messages: Record<string, any>[] }>(`/app/loan/support/messages?afterId=${afterId}`),
-  sendSupportMessage: (content: string) => request<Record<string, any>>('/app/loan/support/send', { method: 'POST', body: JSON.stringify({ content }) }),
+  sendSupportMessage: (content: string, attachment?: Record<string, any>) => request<Record<string, any>>('/app/loan/support/send', { method: 'POST', body: JSON.stringify({ content, attachment }) }),
+  uploadSupportFile: (file: File) => { const body = new FormData(); body.append('file', file); return request<{ url: string; type: string; name: string }>('/app/loan/support/upload', { method: 'POST', body }) },
+  publicSupportMessages: (token: string, afterId = 0) => request<{ conversation: Record<string, any>; messages: Record<string, any>[] }>(`/app/loan/support/public/messages?token=${encodeURIComponent(token)}&afterId=${afterId}`, { headers: { Authorization: '' } }),
+  publicSupportUpload: (token: string, file: File) => { const body = new FormData(); body.append('token', token); body.append('file', file); return fetch(`${API_BASE}/app/loan/public/upload`, { method: 'POST', body }).then(async response => { const result: ApiResult<{ url: string; type: string; name: string }> = await response.json(); if (!response.ok || result.code !== 1000) throw new Error(result.message || '上传失败'); return result.data }) },
+  publicSupportReply: (token: string, content: string, attachment?: Record<string, any>) => request<Record<string, any>>('/app/loan/support/public/reply', { method: 'POST', headers: { Authorization: '' }, body: JSON.stringify({ token, content, attachment }) }),
 }

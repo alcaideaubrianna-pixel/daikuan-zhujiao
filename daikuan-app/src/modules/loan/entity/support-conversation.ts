@@ -10,6 +10,8 @@ export class SupportConversationEntity extends BaseEntity {
   @Column({ comment: '状态', default: 'open' })
   status: string;
   @Column({ comment: '客服管理员ID', nullable: true }) staffId: number;
+  @Index({ unique: true })
+  @Column({ comment: '客服分享访问令牌', nullable: true, length: 80 }) staffAccessToken: string;
   @Column({ comment: '最后消息', nullable: true }) lastMessage: string;
   @Column({ comment: '最后消息时间', nullable: true }) lastMessageAt: string;
   @Column({ comment: '用户未读数', default: 0 }) userUnread: number;
