@@ -147,6 +147,9 @@ importers:
 
   web/admin:
     dependencies:
+      '@advanced-chat/components':
+        specifier: 3.0.0-rc.3
+        version: 3.0.0-rc.3(vue@3.5.43(typescript@5.5.4))
       '@cool-vue/crud':
         specifier: ^8.0.6
         version: 8.0.6(typescript@5.5.4)
@@ -202,7 +205,7 @@ importers:
         specifier: ^2.0.12
         version: 2.0.12
       vue:
-        specifier: ^3.5.13
+        specifier: ^3.5.43
         version: 3.5.43(typescript@5.5.4)
       vue-echarts:
         specifier: ^7.0.3
@@ -7706,6 +7709,24 @@ packages:
 
 snapshots:
 
+  '@advanced-chat/components@3.0.0-rc.3(vue@3.5.43(typescript@5.5.4))':
+    dependencies:
+      '@vueuse/components': 14.4.0(vue@3.5.43(typescript@5.5.4))
+      '@vueuse/core': 14.4.0(vue@3.5.43(typescript@5.5.4))
+      emoji-picker-element: 1.29.1
+      micromark: 4.0.2
+      micromark-extension-gfm: 3.0.0
+      micromark-extension-gfm-footnote: 2.1.0
+      micromark-extension-gfm-strikethrough: 2.1.0
+      micromark-extension-gfm-table: 2.1.2
+      micromark-extension-gfm-tagfilter: 2.0.0
+      micromark-extension-gfm-task-list-item: 2.1.0
+      micromark-util-combine-extensions: 2.0.1
+      micromark-util-types: 2.0.2
+      vue: 3.5.43(typescript@5.5.4)
+    transitivePeerDependencies:
+      - supports-color
+
   '@advanced-chat/components@3.0.0-rc.3(vue@3.5.43(typescript@6.0.3))':
     dependencies:
       '@vueuse/components': 14.4.0(vue@3.5.43(typescript@6.0.3))
@@ -9781,6 +9802,12 @@ snapshots:
       typescript: 6.0.3
       vue: 3.5.43(typescript@6.0.3)
 
+  '@vueuse/components@14.4.0(vue@3.5.43(typescript@5.5.4))':
+    dependencies:
+      '@vueuse/core': 14.4.0(vue@3.5.43(typescript@5.5.4))
+      '@vueuse/shared': 14.4.0(vue@3.5.43(typescript@5.5.4))
+      vue: 3.5.43(typescript@5.5.4)
+
   '@vueuse/components@14.4.0(vue@3.5.43(typescript@6.0.3))':
     dependencies:
       '@vueuse/core': 14.4.0(vue@3.5.43(typescript@6.0.3))
@@ -9795,6 +9822,13 @@ snapshots:
       vue: 3.5.43(typescript@5.5.4)
     transitivePeerDependencies:
       - typescript
+
+  '@vueuse/core@14.4.0(vue@3.5.43(typescript@5.5.4))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 14.4.0
+      '@vueuse/shared': 14.4.0(vue@3.5.43(typescript@5.5.4))
+      vue: 3.5.43(typescript@5.5.4)
 
   '@vueuse/core@14.4.0(vue@3.5.43(typescript@6.0.3))':
     dependencies:
@@ -9841,6 +9875,10 @@ snapshots:
       vue: 3.5.43(typescript@5.5.4)
     transitivePeerDependencies:
       - typescript
+
+  '@vueuse/shared@14.4.0(vue@3.5.43(typescript@5.5.4))':
+    dependencies:
+      vue: 3.5.43(typescript@5.5.4)
 
   '@vueuse/shared@14.4.0(vue@3.5.43(typescript@6.0.3))':
     dependencies:
