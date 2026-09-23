@@ -5,7 +5,7 @@ services:
     ports:
       - "9000:9000"
     environment:
-      LIBREDESK_SYSTEM_USER_PASSWORD: ${LIBREDESK_SYSTEM_USER_PASSWORD:-change-me-now}
+      LIBREDESK_SYSTEM_USER_PASSWORD: ${LIBREDESK_SYSTEM_USER_PASSWORD:-ChangeMeNow!123}
     depends_on:
       db:
         condition: service_healthy
