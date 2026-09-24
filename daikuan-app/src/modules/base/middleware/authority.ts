@@ -49,7 +49,7 @@ export class BaseAuthorityMiddleware
       let statusCode = 200;
       let { url } = ctx;
       url = url.replace(this.prefix, '').split('?')[0];
-      const token = ctx.get('Authorization');
+      const token = ctx.get('Authorization') || (url.endsWith('/loan/support/stream') ? String(ctx.query.accessToken || '') : '');
       const adminUrl = '/admin/';
       // 路由地址为 admin前缀的 需要权限校验
       if (_.startsWith(url, adminUrl)) {
