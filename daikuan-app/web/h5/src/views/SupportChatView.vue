@@ -55,12 +55,16 @@ const sendMessage = async ({ content, files }: SendPayload) => {
 }
 
 let refreshTimer: ReturnType<typeof setInterval> | undefined
+let eventSource: EventSource | undefined
+let sseConnected = false
+const appendEvent = (event: MessageEvent) => { try { const item = toMessage(JSON.parse(event.data) as ApiMessage); if (!messages.value.some(existing => existing.id === item.id)) messages.value.push(item) } catch {} }
 onMounted(async () => {
   if (!store.user) { try { await store.hydrate() } catch {} }
   await loadMessages()
-  refreshTimer = setInterval(() => loadMessages(true), 2000)
+  const token = localStorage.getItem('kuaidai_token')
+  if (token) { eventSource = new EventSource(`${(import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')}/app/loan/support/stream?accessToken=${encodeURIComponent(token)}`); eventSource.onopen = () => { sseConnected = true }; eventSource.onmessage = appendEvent; eventSource.onerror = () => { if (sseConnected) { sseConnected = false; eventSource?.close(); eventSource = undefined; refreshTimer = setInterval(() => loadMessages(true), 3000) } } }
 })
-onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer) })
+onUnmounted(() => { if (refreshTimer) clearInterval(refreshTimer); eventSource?.close() })
 const goBack = () => { if (window.history.state?.back) router.back(); else router.replace('/home') }
 </script>
 

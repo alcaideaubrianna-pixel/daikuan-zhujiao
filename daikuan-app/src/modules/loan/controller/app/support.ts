@@ -4,6 +4,7 @@ import { LoanSupportService } from '../../service/support';
 import { PluginService } from '../../../plugin/service/info';
 import * as fs from 'fs';
 import { CoolCommException } from '@cool-midway/core';
+import { PassThrough } from 'stream';
 
 @CoolController()
 export class AppLoanSupportController extends BaseController {
@@ -27,6 +28,16 @@ export class AppLoanSupportController extends BaseController {
         Number(afterId || 0)
       )
     );
+  }
+  @Get('/stream', { summary: '客服消息事件流' }) async stream(@Query('afterId') afterId?: number) {
+    const conversation = await this.loanSupportService.conversation(this.ctx.user.id);
+    return this.sse(conversation.id, Number(afterId || 0));
+  }
+  private async sse(conversationId: number, afterId: number) {
+    this.ctx.set('Content-Type', 'text/event-stream'); this.ctx.set('Cache-Control', 'no-cache'); this.ctx.set('Connection', 'keep-alive');
+    const stream = new PassThrough(); this.ctx.status = 200; this.ctx.body = stream; let cursor = afterId; let closed = false;
+    const send = async () => { if (closed) return; const list = await this.loanSupportService.messagesByConversation(conversationId, cursor); for (const item of list) { cursor = item.id; stream.write(`data: ${JSON.stringify(item)}\n\n`); } stream.write(': keep-alive\n\n'); };
+    await send(); const timer = setInterval(send, 2000); this.ctx.req.on('close', () => { closed = true; clearInterval(timer); stream.end(); });
   }
   @Post('/send', { summary: '发送客服消息' }) async send(
     @Body('content') content: string,

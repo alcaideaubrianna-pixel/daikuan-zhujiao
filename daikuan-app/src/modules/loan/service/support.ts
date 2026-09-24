@@ -71,6 +71,10 @@ export class LoanSupportService extends BaseService {
     return { conversation, messages };
   }
 
+  async messagesByConversation(conversationId: number, afterId = 0) {
+    return this.messageRepo.find({ where: { conversationId, id: MoreThan(afterId) }, order: { id: 'ASC' }, take: 100 });
+  }
+
   async sendUser(userId: number, content: string, attachment?: { url?: string; type?: string; name?: string }) {
     if ((!content?.trim() && !attachment?.url) || content?.trim().length > 2000)
       throw new CoolCommException('消息内容不正确');

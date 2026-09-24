@@ -64,8 +64,9 @@ export class UserMiddleware implements IMiddleware<Context, NextFunction> {
           '/app/loan/public/upload',
           '/app/loan/support/public/messages',
           '/app/loan/support/public/reply',
+          '/app/loan/support/public/stream',
         ].includes(url);
-        const token = ctx.get('Authorization');
+        const token = ctx.get('Authorization') || (url.endsWith('/support/stream') ? String(ctx.query.accessToken || '') : '');
         const isIgnored = publicAuthUrl || this.ignoreUrls.some(pattern =>
           this.utils.matchUrl(pattern, url)
         );
