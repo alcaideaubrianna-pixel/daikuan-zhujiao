@@ -28,7 +28,12 @@ const loadMessages = async (silent = false) => {
   if (!silent) loadingMessages.value = true
   try {
     const result = await api.supportMessages(0)
-    messages.value = (result.messages as ApiMessage[]).map(toMessage)
+    const incoming = (result.messages as ApiMessage[]).map(toMessage)
+    const merged = new Map<string, MessageModel>()
+    const messageKey = (item: MessageModel) => item.id && item.id !== 'undefined' ? `id:${item.id}` : `text:${item.sender?.id}|${item.content || ''}`
+    messages.value.forEach(item => merged.set(messageKey(item), item))
+    incoming.forEach(item => merged.set(messageKey(item), item))
+    messages.value = [...merged.values()]
   } catch (error) {
     if (!silent) showToast(error instanceof Error ? error.message : '客服消息加载失败')
   } finally {
