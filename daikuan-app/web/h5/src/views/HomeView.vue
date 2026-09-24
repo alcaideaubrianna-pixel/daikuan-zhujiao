@@ -6,7 +6,7 @@ import { useLoanStore } from '../stores/loan'
 import { getApplicationStatus, reviewStep } from '../utils/loan'
 
 const store = useLoanStore()
-const current = computed(() => store.currentApplication)
+const current = computed(() => store.currentApplication?.status === 'draft' ? null : store.currentApplication)
 const review = computed(() => getApplicationStatus(current.value?.status))
 const approvedTotal = computed(() => store.applications.filter(item => item.status === 'approved').reduce((sum, item) => sum + Number(item.amount), 0))
 </script>
@@ -34,8 +34,8 @@ const approvedTotal = computed(() => store.applications.filter(item => item.stat
     <section class="feature-strip"><div><van-icon name="fire-o"/><b>快速评估</b><span>材料齐全后快速审核</span></div><div><van-icon name="shield-o"/><b>费用透明</b><span>不收取前期费用</span></div><div><van-icon name="calendar-o"/><b>灵活周期</b><span>支持 3-12 期</span></div></section>
     <section class="section-head"><h2>申请资料</h2><router-link to="/auth">{{store.certified?'查看资料':'继续认证'}} <van-icon name="arrow"/></router-link></section>
     <van-grid :column-num="4" :border="false"><van-grid-item icon="description-o" text="借条材料" to="/materials/iou"/><van-grid-item icon="balance-list-o" text="收入流水" to="/materials/income"/><van-grid-item icon="bill-o" text="负债信息" to="/materials/debt"/><van-grid-item class="customer-service-grid" icon="service-o" text="在线客服" to="/support"/></van-grid>
-    <section class="section-head home-loan-title"><h2>我的借款</h2><router-link to="/bills">全部申请 <van-icon name="arrow"/></router-link></section>
-    <section class="repay-card"><div class="repay-card__head"><span>累计审核通过</span><van-tag plain type="success">{{store.applications.filter(item=>item.status==='approved').length}} 笔</van-tag></div><strong>{{money(approvedTotal)}}</strong><p>申请记录、审核结果和进度均以后台数据为准</p><van-button size="small" round type="primary" to="/bills">查看申请记录</van-button></section>
+    <template v-if="store.applications.some(item => item.status !== 'draft')"><section class="section-head home-loan-title"><h2>我的借款</h2><router-link to="/bills">全部申请 <van-icon name="arrow"/></router-link></section>
+    <section class="repay-card"><div class="repay-card__head"><span>累计审核通过</span><van-tag plain type="success">{{store.applications.filter(item=>item.status==='approved').length}} 笔</van-tag></div><strong>{{money(approvedTotal)}}</strong><p>申请记录、审核结果和进度均以后台数据为准</p><van-button size="small" round type="primary" to="/bills">查看申请记录</van-button></section></template>
     <AppTabbar/>
   </main>
 </template>
