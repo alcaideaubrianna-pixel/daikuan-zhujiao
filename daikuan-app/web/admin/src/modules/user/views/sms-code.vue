@@ -1,0 +1,8 @@
+<template><cl-crud ref="Crud"><cl-row><cl-refresh-btn/><cl-flex1/><cl-search-key placeholder="手机号、验证码或文案"/></cl-row><cl-row><cl-table ref="Table"/></cl-row><cl-row><cl-flex1/><cl-pagination/></cl-row></cl-crud></template>
+<script setup lang="ts">
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud'; import { useCool } from '/@/cool';
+defineOptions({ name: 'user-sms-code' }); const { service } = useCool(); const sms = (service as any).user.smsCode;
+const Table = useTable({ columns: [{ label: '手机号', prop: 'phone', minWidth: 140 }, { label: '验证码', prop: 'code', width: 110 }, { label: '短信文案', prop: 'content', minWidth: 360, showOverflowTooltip: true }, { label: '来源', prop: 'source', width: 100 }, { label: '状态', prop: 'status', width: 90, dict: [{ label: '有效', value: 1, type: 'success' }, { label: '已使用/失效', value: 0, type: 'info' }] }, { label: '过期时间', prop: 'expireAt', minWidth: 170 }, { type: 'op', buttons: ['edit'], width: 80 }] });
+const Upsert = useUpsert({ items: [{ label: '手机号', prop: 'phone', required: true, component: { name: 'el-input' } }, { label: '验证码', prop: 'code', required: true, component: { name: 'el-input', props: { maxlength: 8 } } }, { label: '短信文案', prop: 'content', component: { name: 'el-input', props: { type: 'textarea', rows: 3 } } }, { label: '状态', prop: 'status', value: 1, component: { name: 'el-radio-group', options: [{ label: '有效', value: 1 }, { label: '失效', value: 0 }] } }, { label: '过期时间', prop: 'expireAt', required: true, component: { name: 'el-date-picker', props: { type: 'datetime' } } }] });
+const Crud = useCrud({ service: sms }, app => app.refresh());
+</script>

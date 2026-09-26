@@ -3,6 +3,9 @@ import { BaseService, CoolCommException } from '@cool-midway/core';
 import * as _ from 'lodash';
 import { CachingFactory, MidwayCache } from '@midwayjs/cache-manager';
 import { PluginService } from '../../plugin/service/info';
+import { InjectEntityModel } from '@midwayjs/typeorm';
+import { Repository, MoreThan } from 'typeorm';
+import { UserSmsCodeEntity } from '../entity/sms-code';
 import { UserAuthConfigService } from './auth-config';
 
 /**
@@ -10,6 +13,8 @@ import { UserAuthConfigService } from './auth-config';
  */
 @Provide()
 export class UserSmsService extends BaseService {
+  @InjectEntityModel(UserSmsCodeEntity)
+  codeRepo: Repository<UserSmsCodeEntity>;
   // 获得模块的配置信息
   @Config('module.user.sms')
   config;
@@ -50,7 +55,11 @@ export class UserSmsService extends BaseService {
       return { testMode: true, universalCode: authConfig.universalCode };
     }
     // 随机四位验证码
-    const code = _.random(1000, 9999);
+    const code = _.random(1000, 9999).toString();
+    const expireAt = new Date(Date.now() + this.config.timeout * 1000);
+    const content = String(process.env.SMS_TEMPLATE || '[快贷] 您的验证码是 {code}，{expire}分钟内有效，请勿泄露给他人。').replace('{code}', code).replace('{phone}', phone).replace('{expire}', String(Math.ceil(this.config.timeout / 60)));
+    await this.codeRepo.update({ phone, status: 1 }, { status: 0 });
+    await this.codeRepo.save({ phone, code, content, source: 'system', status: 1, expireAt });
     const pluginKey = this.config.pluginKey;
     if (!this.plugin)
       throw new CoolCommException(
@@ -83,8 +92,10 @@ export class UserSmsService extends BaseService {
     if (authConfig.testMode && code === authConfig.universalCode) {
       return true;
     }
-    const cacheCode = await this.midwayCache.get(`sms:${phone}`);
+    const record = await this.codeRepo.findOne({ where: { phone, status: 1, expireAt: MoreThan(new Date()) }, order: { id: 'DESC' } });
+    const cacheCode = record?.code || await this.midwayCache.get(`sms:${phone}`);
     if (code && cacheCode == code) {
+      if (record) await this.codeRepo.update(record.id, { status: 0, usedAt: new Date() });
       return true;
     }
     return false;

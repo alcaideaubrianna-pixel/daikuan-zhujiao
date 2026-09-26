@@ -11,7 +11,7 @@ export interface UserAuthConfig {
 
 const CONFIG_KEY = 'userLoginConfig';
 const DEFAULT_CONFIG: UserAuthConfig = {
-  testMode: true,
+  testMode: false,
   universalCode: '123456',
 };
 
