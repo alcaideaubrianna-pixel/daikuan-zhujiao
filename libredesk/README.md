@@ -5,10 +5,10 @@ cd libredesk
 LIBREDESK_SYSTEM_USER_PASSWORD='replace-this' docker compose up -d
 ```
 
-Open `http://localhost:9000`, create a live-chat inbox, then set these variables when building H5:
+Open `http://localhost:9001`, create a live-chat inbox, then set these variables when building H5:
 
 ```env
-VITE_LIBREDESK_URL=http://localhost:9000
+VITE_LIBREDESK_URL=http://localhost:9001
 VITE_LIBREDESK_INBOX_ID=<inbox uuid>
 ```
 

@@ -18,7 +18,6 @@ declare module 'vue' {
     PageNav: typeof import('./src/components/PageNav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    VanActionBar: typeof import('vant/es')['ActionBar']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']

@@ -3,7 +3,9 @@ services:
     image: libredesk/libredesk:latest
     restart: unless-stopped
     ports:
-      - "9000:9000"
+      # LibreDesk listens on 9000 inside the container. Keep it separate from
+      # the existing admin service which owns host port 9000.
+      - "9001:9000"
     environment:
       LIBREDESK_SYSTEM_USER_PASSWORD: ${LIBREDESK_SYSTEM_USER_PASSWORD:-ChangeMeNow!123}
     depends_on:

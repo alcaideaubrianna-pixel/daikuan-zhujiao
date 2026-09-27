@@ -9,6 +9,7 @@ import {
 } from '@midwayjs/core';
 import * as koa from '@midwayjs/koa';
 // import * as crossDomain from '@midwayjs/cross-domain';
+import * as crossDomain from '@midwayjs/cross-domain';
 import * as validate from '@midwayjs/validate';
 import * as info from '@midwayjs/info';
 import * as staticFile from '@midwayjs/static-file';
@@ -23,6 +24,8 @@ import * as upload from '@midwayjs/upload';
 
 @Configuration({
   imports: [
+    // Allow the Capacitor Android WebView origin to call the API.
+    crossDomain,
     // https://koajs.com/
     koa,
     // 是否开启跨域(注：顺序不能乱放！！！) http://www.midwayjs.org/docs/extensions/cross_domain

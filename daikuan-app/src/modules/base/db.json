@@ -27,6 +27,13 @@
           "data": "这是一段字符串",
           "dataType": 0,
           "remark": null
+      },
+      {
+          "keyName": "userLoginConfig",
+          "name": "用户登录及短信渠道配置",
+          "data": "{\"testMode\":false,\"universalCode\":\"123456\",\"smsProvider\":\"plugin\",\"yunxinAppKey\":\"\",\"yunxinTemplateId\":\"\",\"yunxinCodeLen\":6}",
+          "dataType": 0,
+          "remark": "请在参数配置页面点击短信渠道设置维护；云信 AppSecret 单独安全保存"
       }
   ],
   "base_sys_conf": [

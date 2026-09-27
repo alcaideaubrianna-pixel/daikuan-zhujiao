@@ -7,6 +7,9 @@ import { setToastDefaultOptions } from 'vant'
 import router from './router'
 import { AdvancedChatPlugin } from '@advanced-chat/components'
 import '@advanced-chat/components/styles'
+import { Capacitor } from '@capacitor/core'
+import { App as NativeApp } from '@capacitor/app'
+import { StatusBar, Style } from '@capacitor/status-bar'
 
 setToastDefaultOptions({
   duration: 2000,
@@ -22,3 +25,13 @@ createApp(App).use(createPinia()).use(router).use(AdvancedChatPlugin({ strings: 
   'chat.autocomplete.users': '用户', 'chat.state.loading': '加载中…', 'chat.state.empty': '暂无内容', 'chat.state.error': '加载失败',
   'chat.state.offline': '已离线', 'chat.state.reconnecting': '重新连接中…', 'chat.state.permission-denied': '没有权限', 'chat.state.retry': '重试'
 } })).mount('#app')
+
+if (Capacitor.isNativePlatform()) {
+  void StatusBar.setBackgroundColor({ color: '#f5f7fb' })
+  void StatusBar.setStyle({ style: Style.Light })
+  void NativeApp.addListener('backButton', ({ canGoBack }) => {
+    if (canGoBack && window.history.state?.back) router.back()
+    else if (router.currentRoute.value.path !== '/home') void router.replace('/home')
+    else void NativeApp.exitApp()
+  })
+}

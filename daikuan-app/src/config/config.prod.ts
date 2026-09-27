@@ -12,6 +12,14 @@ const useSqlite = process.env.DATABASE_TYPE === 'sqlite';
  * 本地开发 npm run prod 读取的配置文件
  */
 export default {
+  cors: {
+    origin: request => {
+      const origin = request.get('origin');
+      return origin === 'https://localhost' || origin === 'http://localhost:5173' ? origin : undefined;
+    },
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+    keepHeadersOnError: true,
+  },
   typeorm: {
     dataSource: {
       default: {
