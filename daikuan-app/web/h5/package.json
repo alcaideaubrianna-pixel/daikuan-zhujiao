@@ -8,6 +8,7 @@
     "build": "vue-tsc -b && vite build",
     "build:android": "vue-tsc -b && vite build --mode android && cap sync android",
     "apk:debug": "pnpm build:android && cd android && ./gradlew assembleDebug",
+    "apk:release": "pnpm build:android && cd android && ./gradlew assembleRelease",
     "android:open": "cap open android",
     "preview": "vite preview"
   },

@@ -17,6 +17,7 @@ export interface NotificationItem { id:number;type:string;title:string;content:s
 export interface UserBankCard { id:number;bankCode:string;bankName:string;cardNo:string;lastFour:string;isDefault:number;status:number }
 
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+const REQUEST_TIMEOUT_MS = 15000
 const TOKEN_KEY = 'kuaidai_token'
 const REFRESH_KEY = 'kuaidai_refresh_token'
 export const AUTH_EXPIRED_EVENT = 'kuaidai:auth-expired'
@@ -46,7 +47,18 @@ export async function request<T>(path: string, init: RequestInit = {}, retry = t
   const headers = new Headers(init.headers)
   if (!(init.body instanceof FormData)) headers.set('Content-Type', 'application/json')
   if (authStorage.token()) headers.set('Authorization', authStorage.token())
-  const response = await fetch(`${API_BASE}${path}`, { ...init, headers })
+  const controller = new AbortController()
+  const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+  if (init.signal) init.signal.addEventListener('abort', () => controller.abort(), { once: true })
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE}${path}`, { ...init, headers, signal: controller.signal })
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') throw new Error('请求超时，请检查网络后重试')
+    throw new Error('网络连接失败，请检查网络后重试')
+  } finally {
+    window.clearTimeout(timeout)
+  }
   if (response.status === 401 && retry) {
     refreshing ||= refreshAccessToken().finally(() => { refreshing = null })
     if (await refreshing) return request<T>(path, init, false)

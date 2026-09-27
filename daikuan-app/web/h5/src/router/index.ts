@@ -13,7 +13,6 @@ const router = createRouter({
     { path: '/iou-template', component: () => import('../views/IouTemplateView.vue') },
     { path: '/document-template/:type', component: () => import('../views/DocumentTemplateView.vue') },
     { path: '/identity', component: () => import('../views/IdentityView.vue') },
-    { path: '/face-auth', component: () => import('../views/FaceAuthView.vue') },
     { path: '/profile-auth/:step', component: () => import('../views/ProfileAuthView.vue') },
     { path: '/credit-result', component: () => import('../views/CreditResultView.vue') },
     { path: '/loan', component: () => import('../views/CreateBillView.vue') },

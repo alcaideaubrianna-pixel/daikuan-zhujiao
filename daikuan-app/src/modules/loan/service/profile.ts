@@ -36,7 +36,6 @@ export const REQUIRED_PROFILE_STEPS = [
   'income',
   'debt',
   'identity',
-  'face',
   'personal',
   'contact',
   'bank',

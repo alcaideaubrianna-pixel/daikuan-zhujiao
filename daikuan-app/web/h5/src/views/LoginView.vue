@@ -12,6 +12,7 @@ const smsCode = ref('')
 const password = ref('')
 const agreed = ref(false)
 const loading = ref(false)
+const sendLoading = ref(false)
 const countdown = ref(0)
 const router = useRouter()
 const route = useRoute()
@@ -21,7 +22,8 @@ let countdownTimer: number | undefined
 const validPhone = () => /^1\d{10}$/.test(phone.value)
 const sendCode = async () => {
   if (!validPhone()) return showToast('请输入正确的手机号')
-  if (countdown.value) return
+  if (countdown.value || sendLoading.value) return
+  sendLoading.value = true
   try {
     const result = await api.sendSmsCode(phone.value)
     showToast(result.testMode ? `测试验证码：${result.universalCode}` : '验证码已发送')
@@ -32,6 +34,8 @@ const sendCode = async () => {
     }, 1000)
   } catch (error) {
     showToast(error instanceof Error ? error.message : '验证码发送失败')
+  } finally {
+    sendLoading.value = false
   }
 }
 const login = async () => {
@@ -90,7 +94,7 @@ onUnmounted(() => { if (countdownTimer) window.clearInterval(countdownTimer) })
         <div class="login-fields">
           <van-field v-model="phone" type="tel" maxlength="11" label="手机号" placeholder="请输入手机号" :rules="[{required:true,pattern:/^1\d{10}$/,message:'请输入正确的手机号'}]" />
           <van-field v-if="mode==='sms'" v-model="smsCode" type="digit" maxlength="8" label="验证码" placeholder="请输入验证码" :rules="[{required:true,message:'请输入验证码'}]">
-            <template #button><van-button class="sms-code-button" size="small" type="primary" plain native-type="button" :disabled="countdown>0" @click.stop="sendCode">{{countdown?`${countdown}s 后重发`:'获取验证码'}}</van-button></template>
+            <template #button><van-button class="sms-code-button" size="small" type="primary" plain native-type="button" :loading="sendLoading" :disabled="countdown>0 || sendLoading" @click.stop="sendCode">{{countdown?`${countdown}s 后重发`:'获取验证码'}}</van-button></template>
           </van-field>
           <van-field v-else v-model="password" type="password" maxlength="32" label="登录密码" placeholder="请输入登录密码" :rules="[{required:true,validator:(value:string)=>value.length>=6,message:'请输入至少 6 位密码'}]" />
         </div>

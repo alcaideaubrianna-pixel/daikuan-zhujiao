@@ -81,6 +81,7 @@
     "build:server": "cool entity && bundle && mwtsc --cleanOutDir",
     "build:h5": "pnpm --dir web/h5 build",
     "build:admin": "pnpm --dir web/admin build",
+    "images:build": "bash scripts/build-images.sh",
     "build:obfuscate": "cool entity && bundle && mwtsc --cleanOutDir && cool obfuscate",
     "pkg": "rimraf build && mkdir build && npm run build && pkg . -d > build/pkg.log",
     "pm2:start": "pm2 start ./bootstrap.js -i 1 --name cool-admin",

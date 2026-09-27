@@ -29,11 +29,6 @@ const saveTemplate = () => {
           <span class="template-zoom"><van-icon name="expand-o" /> 点击放大</span>
         </button>
       </van-tab>
-      <van-tab title="视频示例">
-        <van-empty image="network" description="视频模板为原型占位">
-          <van-button size="small" type="primary" icon="play-circle-o">播放示例</van-button>
-        </van-empty>
-      </van-tab>
     </van-tabs>
     <van-notice-bar wrapable left-icon="info-o" text="本模板仅供材料展示参考，不代表法律意见或放款承诺。" />
     <section class="original-template-list">

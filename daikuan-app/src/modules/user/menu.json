@@ -1,0 +1,30 @@
+[
+  {
+    "name": "用户管理",
+    "router": "/user",
+    "perms": null,
+    "type": 0,
+    "icon": "icon-user",
+    "orderNum": 3,
+    "viewPath": null,
+    "keepAlive": true,
+    "isShow": true,
+    "childMenus": [
+      {
+        "name": "手机验证码",
+        "router": "/user/sms-code",
+        "perms": null,
+        "type": 1,
+        "icon": "icon-mobile-phone",
+        "orderNum": 20,
+        "viewPath": "modules/user/views/sms-code.vue",
+        "keepAlive": true,
+        "isShow": true,
+        "childMenus": [
+          { "name": "查询", "router": null, "perms": "user:smsCode:page,user:smsCode:list,user:smsCode:info", "type": 2, "icon": null, "orderNum": 1, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] },
+          { "name": "修改", "router": null, "perms": "user:smsCode:update", "type": 2, "icon": null, "orderNum": 2, "viewPath": null, "keepAlive": false, "isShow": true, "childMenus": [] }
+        ]
+      }
+    ]
+  }
+]

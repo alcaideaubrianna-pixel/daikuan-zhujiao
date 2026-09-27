@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { api, authStorage, type LoanApplication } from '../api/client'
+import { certifications } from '../data/demo'
 
 export const useLoanStore = defineStore('loan', () => {
   const loggedIn = ref(Boolean(authStorage.token()))
@@ -19,7 +20,11 @@ export const useLoanStore = defineStore('loan', () => {
   const currentApplication = ref<LoanApplication|null>(null)
   const reviewStage = ref('draft')
   const loanDraft = ref({ amount: 50000, term: 12, purpose: '日常消费', bank: '' })
-  const applyProfile = (profile:Record<string,any>) => { completed.value=Array.isArray(profile.completed)?profile.completed:[];certified.value=completed.value.length>=8 }
+  const requiredSteps = new Set(certifications.map(item => item.key))
+  const applyProfile = (profile:Record<string,any>) => {
+    completed.value = Array.isArray(profile.completed) ? profile.completed.filter((step: string) => requiredSteps.has(step)) : []
+    certified.value = certifications.every(item => completed.value.includes(item.key))
+  }
   const completeStep = async (step:string,data:Record<string,any>={}) => { const profile=await api.saveProfileStep(step,data);applyProfile(profile);return profile }
   const loginWithPassword = async (phone:string,password:string) => { const tokens=await api.passwordLogin(phone,password);authStorage.save(tokens.token,tokens.refreshToken);loggedIn.value=true;await hydrate() }
   const loginWithSms = async (phone:string,smsCode:string) => { const tokens=await api.smsLogin(phone,smsCode);authStorage.save(tokens.token,tokens.refreshToken);loggedIn.value=true;await hydrate() }

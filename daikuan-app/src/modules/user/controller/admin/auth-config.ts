@@ -6,7 +6,7 @@ import {
 } from '../../service/auth-config';
 import { UserSmsService } from '../../service/sms';
 
-@CoolController()
+@CoolController('/user/auth-config')
 export class AdminUserAuthConfigController extends BaseController {
   @Inject()
   userAuthConfigService: UserAuthConfigService;

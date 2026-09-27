@@ -3,6 +3,9 @@ cache/
 npm-debug.log
 yarn-error.log
 node_modules/
+web/h5/android/keystore.properties
+web/h5/android/*.keystore
+*.tar.gz
 package-lock.json
 yarn.lock
 coverage/
