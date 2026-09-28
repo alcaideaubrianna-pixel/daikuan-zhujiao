@@ -19,7 +19,7 @@ export const useLoanStore = defineStore('loan', () => {
   const applications = ref<LoanApplication[]>([])
   const currentApplication = ref<LoanApplication|null>(null)
   const reviewStage = ref('draft')
-  const loanDraft = ref({ amount: 50000, term: 12, purpose: '日常消费', bank: '' })
+  const loanDraft = ref({ amount: 50000, term: 12, purpose: '', bank: '' })
   const requiredSteps = new Set(certifications.map(item => item.key))
   const applyProfile = (profile:Record<string,any>) => {
     completed.value = Array.isArray(profile.completed) ? profile.completed.filter((step: string) => requiredSteps.has(step)) : []
