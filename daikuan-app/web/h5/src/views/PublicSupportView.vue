@@ -8,7 +8,7 @@ import { api } from '../api/client'
 
 interface PublicMessage { id: number; senderType: 'staff' | 'user' | 'system'; content: string; createTime: string; attachmentUrl?: string; attachmentType?: string; attachmentName?: string }
 const route = useRoute(); const token = String(route.query.token || ''); const loading = ref(true); const refreshing = ref(false); const messages = ref<MessageModel[]>([])
-const visitor: User = { id: 'staff-link', name: '客服', avatar: '/favicon.svg', status: { state: 'online' } }; const customer: User = { id: 'customer', name: '客户', status: { state: 'online' } }
+const visitor: User = { id: 'staff-link', name: '客服', avatar: '/app.png', status: { state: 'online' } }; const customer: User = { id: 'customer', name: '客户', status: { state: 'online' } }
 const chat = computed<ChatModel>(() => ({ id: 'customer', name: '客户会话', users: [visitor, customer] }))
 const attachment = (item: PublicMessage) => item.attachmentUrl ? { name: item.attachmentName || '附件', type: item.attachmentType === 'video' ? 'video/mp4' : 'image/*', extension: item.attachmentType || 'file', url: item.attachmentUrl, previewUrl: item.attachmentUrl, previewable: true } : undefined
 const map = (item: PublicMessage): MessageModel => ({ id: String(item.id), sender: item.senderType === 'staff' ? visitor : customer, content: item.content, createdAt: item.createTime || new Date().toISOString(), status: 'sent', files: attachment(item) ? [attachment(item)!] : undefined })

@@ -16,7 +16,7 @@ const loadingMessages = ref(false)
 const refreshing = ref(false)
 const sending = ref(false)
 const currentUser = computed<User>(() => ({ id: String(store.user?.id || 'me'), name: String(store.user?.nickName || store.user?.phone || '我'), avatar: store.user?.avatar, status: { state: 'online' } }))
-const supportUser: User = { id: 'support', name: '快贷客服', avatar: '/favicon.svg', status: { state: 'online' } }
+const supportUser: User = { id: 'support', name: '快贷客服', avatar: '/app.png', status: { state: 'online' } }
 const chat = computed<ChatModel>(() => ({ id: 'support', name: '在线客服', users: [currentUser.value, supportUser] }))
 
 const toFile = (item: ApiMessage) => item.attachmentUrl ? [{ name: item.attachmentName || '附件', type: item.attachmentType === 'video' ? 'video/mp4' : 'image/*', extension: item.attachmentType || 'file', url: item.attachmentUrl, previewUrl: item.attachmentUrl, previewable: true }] : undefined

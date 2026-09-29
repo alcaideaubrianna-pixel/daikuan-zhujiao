@@ -52,7 +52,7 @@ a { color: inherit; text-decoration: none; }
 .loan-hero { padding: 22px 20px 30px; color: white; background: linear-gradient(145deg, #1748bd, #3478ef); }
 .brand-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 34px; }
 .brand-row b { display: flex; align-items: center; gap: 8px; font-size: 20px; }
-.brand-row i { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px; color: var(--brand); background: white; font-style: normal; }
+.brand-row img { width: 32px; height: 32px; display: block; border-radius: 8px; object-fit: cover; background: white; }
 .brand-row .van-icon { font-size: 23px; }
 .loan-hero > p { margin: 0; font-size: 13px; opacity: .78; }
 .loan-hero > strong { display: block; margin: 7px 0 4px; font-size: 42px; line-height: 1.15; letter-spacing: 0; }
@@ -98,7 +98,7 @@ a { color: inherit; text-decoration: none; }
 
 .auth-page { min-height: 100vh; padding: max(18px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom)); background: #f7f8fa; }
 .login-header { height: 44px; display: flex; align-items: center; gap: 10px; }
-.login-logo { width: 38px; height: 38px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 8px; color: white; background: #1748bd; font-size: 19px; font-weight: 700; }
+.login-logo { width: 38px; height: 38px; flex: 0 0 auto; display: block; border-radius: 8px; object-fit: cover; background: white; }
 .login-header > div:nth-child(2) { display: flex; flex: 1; flex-direction: column; gap: 2px; }
 .login-header b { font-size: 17px; }
 .login-header span { color: #8a93a3; font-size: 10px; }

@@ -64,7 +64,7 @@ onUnmounted(() => { if (countdownTimer) window.clearInterval(countdownTimer) })
 <template>
   <main class="auth-page">
     <header class="login-header">
-      <div class="login-logo" aria-hidden="true">快</div>
+      <img class="login-logo" src="/app.png" alt="快贷" />
       <div><b>快贷</b><span>安心、透明的借款服务</span></div>
       <van-icon name="shield-o" />
     </header>

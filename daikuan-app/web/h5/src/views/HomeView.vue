@@ -13,7 +13,7 @@ const approvedTotal = computed(() => store.applications.filter(item => item.stat
 
 <template>
   <main class="page home">
-    <header class="loan-hero"><div class="brand-row"><b><i>快</i> 快贷</b><router-link to="/messages"><van-icon name="bell"/></router-link></div><p>最高可申请额度（元）</p><strong>{{ money(300000) }}</strong><span>参考年化利率 7.2% 起，额度及利率以审核结果为准</span><van-button class="hero-apply-button" block round :to="store.certified?'/loan':'/auth'">{{store.certified?'立即申请借款':'完善资料并申请'}}</van-button></header>
+    <header class="loan-hero"><div class="brand-row"><b><img src="/app.png" alt="快贷" /> 快贷</b><router-link to="/messages"><van-icon name="bell"/></router-link></div><p>最高可申请额度（元）</p><strong>{{ money(300000) }}</strong><span>参考年化利率 7.2% 起，额度及利率以审核结果为准</span><van-button class="hero-apply-button" block round :to="store.certified?'/loan':'/auth'">{{store.certified?'立即申请借款':'完善资料并申请'}}</van-button></header>
     <van-notice-bar wrapable left-icon="warning-o" color="#b42318" background="#fff1f0" text="快贷不收取任何放款前费用。凡以保证金、解冻费、刷流水等名义要求先付款的，均有诈骗风险。"/>
     <section v-if="current" class="review-card">
       <header class="review-card__head">
