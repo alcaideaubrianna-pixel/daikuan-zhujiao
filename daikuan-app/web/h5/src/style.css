@@ -236,3 +236,12 @@ a { color: inherit; text-decoration: none; }
 .original-template-list{margin:18px 16px 0}.original-template-list>h2{margin:0;font-size:17px}.original-template-list>p{margin:5px 0 12px;color:var(--muted);font-size:11px}.original-template-list>.van-cell{margin-bottom:10px;border:1px solid var(--line);border-radius:8px}.original-template-list .van-cell__left-icon{margin-right:10px;color:var(--brand);font-size:22px}.original-template-list .van-cell__title>span{font-weight:700}.original-template-list .van-cell__value{color:var(--brand);font-weight:700}
 .document-template-page{background:#eef1f7}.document-sheet{margin:16px;padding:26px 22px;border:1px solid #d9dee8;border-radius:4px;background:#fff;box-shadow:0 5px 18px rgba(23,32,51,.06);font-family:"Songti SC","SimSun",serif}.document-sheet h1{margin:0 0 24px;text-align:center;font-size:24px}.document-sheet p,.document-sheet li{font-size:13px;line-height:2;text-align:justify}.document-sheet ol{padding-left:22px}.document-sheet li{margin-bottom:8px}.document-signatures{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:16px 12px}.document-signatures p{margin:0;text-align:left}.document-signatures--single{grid-template-columns:1fr}
 .review-hero,.funding-status{padding:32px 20px;text-align:center;background:white}.review-hero>.van-icon,.funding-status>.van-icon{color:var(--brand);font-size:45px}.review-hero h1,.funding-status h1{margin:12px 0 6px;font-size:22px}.review-hero p,.funding-status p{margin:0;color:var(--muted);font-size:11px}.page>.van-steps--vertical{margin:14px 16px;border-radius:8px}.page>.van-steps--vertical h3{margin:0 0 5px;font-size:14px}.page>.van-steps--vertical p{margin:0;color:var(--muted);font-size:11px}
+:root {
+  touch-action: manipulation;
+}
+
+html,
+body {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+}
