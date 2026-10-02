@@ -4,6 +4,7 @@ import { PassThrough } from 'stream';
 import { SupportConversationEntity } from '../../entity/support-conversation';
 import { UserInfoEntity } from '../../../user/entity/info';
 import { LoanSupportService } from '../../service/support';
+import { LoanTelegramService } from '../../service/telegram';
 
 @CoolController({
   api: ['info', 'list', 'page'],
@@ -20,6 +21,13 @@ import { LoanSupportService } from '../../service/support';
 export class AdminLoanSupportController extends BaseController {
   @Inject() ctx;
   @Inject() loanSupportService: LoanSupportService;
+  @Inject() telegramService: LoanTelegramService;
+  @Get('/telegram/config', { summary: '获取 Telegram 通知配置' }) async telegramConfig() {
+    return this.ok(await this.telegramService.getConfig());
+  }
+  @Post('/telegram/config', { summary: '保存 Telegram 通知配置' }) async saveTelegramConfig(@Body() body: any) {
+    return this.ok(await this.telegramService.saveConfig(body || {}));
+  }
   @Get('/stream', { summary: '后台客服消息事件流' }) async stream(@Query('conversationId') conversationId: number, @Query('afterId') afterId?: number) {
     const id = Number(conversationId); const stream = new PassThrough(); this.ctx.set('Content-Type', 'text/event-stream'); this.ctx.set('Cache-Control', 'no-cache'); this.ctx.set('Connection', 'keep-alive'); this.ctx.status = 200; this.ctx.body = stream; let cursor = Number(afterId || 0); let closed = false;
     const send = async () => { if (closed) return; const list = await this.loanSupportService.messagesByConversation(id, cursor); for (const item of list) { cursor = item.id; stream.write(`data: ${JSON.stringify(item)}\n\n`); } stream.write(': keep-alive\n\n'); }; await send(); const timer = setInterval(send, 2000); this.ctx.req.on('close', () => { closed = true; clearInterval(timer); stream.end(); });

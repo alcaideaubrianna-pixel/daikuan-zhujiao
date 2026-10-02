@@ -110,6 +110,9 @@ export class LoanBankEvent {
         await this.menuRepo.update(supportMenu.id, { viewPath: menuData.viewPath, icon: menuData.icon, parentId: loanMenu.id, isShow: true });
         this.logger.info('Updated loan support admin menu');
       }
+      const telegramMenu = await this.menuRepo.findOneBy({ router: '/loan/telegram' });
+      const telegramData = { parentId: loanMenu.id, name: 'Telegram 通知', router: '/loan/telegram', type: 1, icon: 'Bell', viewPath: 'modules/loan/views/telegram.vue', orderNum: 91, keepAlive: false, isShow: true };
+      if (!telegramMenu) await this.menuRepo.save(telegramData); else await this.menuRepo.update(telegramMenu.id, telegramData);
     }
     if (!(await this.bankRepo.count())) {
       await this.bankRepo.insert(

@@ -14,6 +14,8 @@ import { LoanCreditService } from './credit';
 import { LoanAgreementEntity } from '../entity/agreement';
 import { LoanAgreementSignEntity } from '../entity/agreement-sign';
 import { LoanNotificationEntity } from '../entity/notification';
+import { LoanSupportService } from './support';
+import { LoanTelegramService } from './telegram';
 
 const statuses = [
   'draft',
@@ -46,6 +48,8 @@ export class LoanApplicationService extends BaseService {
   agreementSignRepo: Repository<LoanAgreementSignEntity>;
   @InjectEntityModel(LoanNotificationEntity)
   notificationRepo: Repository<LoanNotificationEntity>;
+  @Inject() loanSupportService: LoanSupportService;
+  @Inject() telegramService: LoanTelegramService;
 
   async current(userId: number) {
     const application = await this.applicationRepo.findOne({
@@ -173,6 +177,10 @@ export class LoanApplicationService extends BaseService {
       title: '借款申请已提交',
       content: `您的借款申请 ${application.applicationNo} 已提交，工作人员将尽快审核。`,
       link: `/application/${application.id}`,
+    });
+    const conversation = await this.loanSupportService.conversation(userId);
+    void this.telegramService.notify(conversation, {
+      content: `提交借款申请\n申请编号：${application.applicationNo}\n借款金额：${application.amount}\n借款期限：${application.term}期`,
     });
     return this.current(userId);
   }

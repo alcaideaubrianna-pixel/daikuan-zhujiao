@@ -1,0 +1,7 @@
+<template><div class="telegram-config"><el-card><template #header>Telegram 客服通知</template><el-form label-width="150px"><el-form-item label="启用通知"><el-switch v-model="form.enabled" /></el-form-item><el-form-item label="群组 Chat ID"><el-input v-model="form.chatId" placeholder="例如 -1001234567890" /></el-form-item><el-form-item label="Bot Token"><el-input v-model="form.botToken" type="password" show-password placeholder="留空表示保持原 Token" /></el-form-item><el-form-item><el-button type="primary" :loading="saving" @click="save">保存并测试</el-button></el-form-item></el-form><el-alert type="info" :closable="false" title="请将群组开启 Topics/论坛模式，并给 Bot 管理员权限。每个客户会自动创建一个话题。" /></el-card></div></template>
+<script setup lang="ts">
+import { onMounted, reactive, ref } from 'vue'; import { ElMessage } from 'element-plus'; import { BaseService } from '/@/cool';
+const service = new BaseService('/admin/loan/support'); const saving = ref(false); const form = reactive({ enabled: false, chatId: '', botToken: '' });
+onMounted(async () => { const data = await service.request({ url: '/telegram/config', method: 'GET' }); Object.assign(form, data || {}); });
+async function save() { saving.value = true; try { const result = await service.request({ url: '/telegram/config', method: 'POST', data: form }); if (form.enabled && !result?.testSuccess) ElMessage.warning(`配置已保存，但测试消息发送失败：${result?.testError || '未知错误'}`); else if (form.enabled) ElMessage.success('配置已保存，测试消息已发送'); else ElMessage.success('Telegram 配置已保存'); } finally { saving.value = false; } }
+</script>

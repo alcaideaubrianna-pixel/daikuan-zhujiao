@@ -16,4 +16,5 @@ export class SupportConversationEntity extends BaseEntity {
   @Column({ comment: '最后消息时间', nullable: true }) lastMessageAt: string;
   @Column({ comment: '用户未读数', default: 0 }) userUnread: number;
   @Column({ comment: '客服未读数', default: 0 }) staffUnread: number;
+  @Column({ nullable: true, type: 'int' }) telegramTopicId: number;
 }

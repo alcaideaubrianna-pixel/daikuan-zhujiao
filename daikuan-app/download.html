@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f7fbff" />
+    <meta name="description" content="快贷，短周转，下款快，一张借条全搞定。" />
+    <link rel="icon" type="image/png" href="app.png" />
+    <title>快贷 App 下载</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #3d415c;
+        --muted: #8d92a7;
+        --blue: #5279f4;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #f7fbff;
+      }
+      body {
+        color: var(--ink);
+        font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+      }
+      .page {
+        min-height: 100svh;
+        padding-bottom: 28px;
+        background: #f7fbff url('download-bg.png') center top/100% auto
+          no-repeat;
+      }
+      .topbar {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid rgba(220, 230, 242, 0.8);
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        font-size: 21px;
+        font-weight: 600;
+      }
+      .back {
+        position: absolute;
+        left: 18px;
+        top: 18px;
+        width: 25px;
+        height: 25px;
+        color: #aeb4c0;
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 20px;
+        text-decoration: none;
+      }
+      .main {
+        width: min(calc(100% - 36px), 560px);
+        margin: 0 auto;
+        padding-top: 58px;
+        text-align: center;
+      }
+      .app-icon {
+        width: 124px;
+        height: 124px;
+        border-radius: 28px;
+        object-fit: cover;
+        background: #fff;
+        box-shadow: 0 10px 22px rgba(74, 129, 224, 0.18);
+      }
+      h1 {
+        margin: 27px 0 6px;
+        color: var(--blue);
+        font-size: 29px;
+        line-height: 1.2;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+      }
+      .slogan {
+        margin: 0;
+        color: #6c9cf4;
+        font-size: 15px;
+        letter-spacing: 0.14em;
+      }
+      .subline {
+        margin: 10px 0 22px;
+        color: #8ba0bd;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+      }
+      .download {
+        width: 100%;
+        height: 52px;
+        border: 0;
+        border-radius: 11px;
+        color: #fff;
+        background: var(--blue);
+        box-shadow: 0 9px 18px rgba(82, 121, 244, 0.2);
+        font: inherit;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .download[aria-disabled='true'] {
+        color: #a5adbc;
+        background: #e9edf4;
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+      .trust {
+        margin: 19px 0 30px;
+        color: #6681b7;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+      }
+      .section {
+        margin-top: 14px;
+        padding: 22px 18px;
+        border: 1px solid rgba(232, 235, 242, 0.9);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 4px 16px rgba(74, 87, 115, 0.04);
+        text-align: left;
+      }
+      .section-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: 0 0 24px;
+        font-size: 19px;
+        font-weight: 600;
+      }
+      .section-title:before,
+      .section-title:after {
+        content: '';
+        width: 58px;
+        height: 1px;
+        background: #e1e5ee;
+      }
+      .details {
+        display: grid;
+        gap: 17px;
+      }
+      .detail {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        align-items: center;
+        gap: 13px;
+      }
+      .detail-icon {
+        width: 46px;
+        height: 46px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: #4dbb6c;
+        font-size: 21px;
+      }
+      .detail-label {
+        margin: 0 0 3px;
+        color: #9297a8;
+        font-size: 15px;
+      }
+      .detail-value {
+        margin: 0;
+        color: #595d76;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: 1fr 26px 1fr 26px 1fr;
+        align-items: center;
+        text-align: center;
+      }
+      .step-number {
+        display: block;
+        font-size: 29px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .step-number small {
+        font-size: 15px;
+        font-weight: 400;
+      }
+      .step-label {
+        display: block;
+        margin-top: 10px;
+        color: #686c81;
+        font-size: 12px;
+      }
+      .arrow {
+        height: 14px;
+        border-radius: 3px;
+        background: #e4e9f2;
+        clip-path: polygon(
+          0 25%,
+          65% 25%,
+          65% 0,
+          100% 50%,
+          65% 100%,
+          65% 75%,
+          0 75%
+        );
+      }
+      .notice {
+        margin: 26px 4px 0;
+        color: #a0a5b2;
+        font-size: 11px;
+        line-height: 1.7;
+        text-align: center;
+      }
+      .wechat-mask {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: none;
+        padding: 76px 24px 24px;
+        background: rgba(15, 24, 43, 0.72);
+      }
+      .wechat-mask.is-visible {
+        display: block;
+      }
+      .wechat-guide {
+        width: min(100%, 360px);
+        margin: 0 auto;
+        padding: 28px 22px 24px;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 16px 44px rgba(15, 24, 43, 0.2);
+        text-align: center;
+      }
+      .wechat-arrow {
+        position: absolute;
+        top: 18px;
+        right: 24px;
+        color: #fff;
+        font-size: 42px;
+        line-height: 1;
+      }
+      .wechat-guide h2 {
+        margin: 0 0 12px;
+        color: #29324a;
+        font-size: 20px;
+      }
+      .wechat-guide p {
+        margin: 0;
+        color: #727b91;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+      .wechat-guide strong {
+        color: var(--blue);
+        font-weight: 600;
+      }
+      @media (min-width: 700px) {
+        .main {
+          padding-top: 72px;
+        }
+        .app-icon {
+          width: 140px;
+          height: 140px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="back" href="javascript:history.back()" aria-label="返回">‹</a
+        ><span>下载快贷</span>
+      </header>
+      <div class="main">
+        <img class="app-icon" src="app.png" alt="快贷" />
+        <h1>短周转 下款快</h1>
+        <p class="slogan">一张借条全搞定</p>
+        <p class="subline">年轻人的灵活借款选择</p>
+        <button class="download" id="download-button" type="button">
+          立即下载
+        </button>
+        <p class="trust">快贷 · 让周转更简单</p>
+        <section class="section" aria-labelledby="detail-title">
+          <h2 class="section-title" id="detail-title">产品详情</h2>
+          <div class="details">
+            <div class="detail">
+              <span class="detail-icon">¥</span>
+              <div>
+                <p class="detail-label">最高借款</p>
+                <p class="detail-value">¥200,000</p>
+              </div>
+            </div>
+            <div class="detail">
+              <span class="detail-icon">%</span>
+              <div>
+                <p class="detail-label">借款利息</p>
+                <p class="detail-value">年化利率(单利)7.2%起</p>
+              </div>
+            </div>
+            <div class="detail">
+              <span class="detail-icon">⚡</span>
+              <div>
+                <p class="detail-label">借款期限</p>
+                <p class="detail-value">快速放款 最长可分24期</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="section" aria-labelledby="steps-title">
+          <h2 class="section-title" id="steps-title">3步快速借款</h2>
+          <div class="steps">
+            <div>
+              <span class="step-number">10<small>秒</small></span
+              ><span class="step-label">快速注册</span>
+            </div>
+            <i class="arrow" aria-hidden="true"></i>
+            <div>
+              <span class="step-number">3<small>分钟</small></span
+              ><span class="step-label">APP内认证</span>
+            </div>
+            <i class="arrow" aria-hidden="true"></i>
+            <div>
+              <span class="step-number">5<small>分钟</small></span
+              ><span class="step-label">最快放款</span>
+            </div>
+          </div>
+        </section>
+        <p class="notice">实际额度、利率及放款结果以页面展示和审核结果为准</p>
+      </div>
+    </main>
+    <div
+      class="wechat-mask"
+      id="wechat-mask"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="wechat-title"
+    >
+      <span class="wechat-arrow" aria-hidden="true">↗</span>
+      <div class="wechat-guide">
+        <h2 id="wechat-title">请在浏览器中打开</h2>
+        <p>
+          微信内暂不支持直接下载 App。<br />请点击右上角
+          <strong>···</strong>，选择<br /><strong>“在浏览器中打开”</strong
+          >后再下载。
+        </p>
+      </div>
+    </div>
+    <script>
+      const DOWNLOAD_CONFIG = { android: './app-release.apk', ios: '' };
+      const wechatMask = document.querySelector('#wechat-mask');
+      const userAgent = navigator.userAgent || '';
+      // WeChat's embedded browser always includes a versioned MicroMessenger token.
+      const isWechat =
+        /MicroMessenger\/\d[\d.]+/i.test(userAgent) &&
+        /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent);
+      if (isWechat) {
+        wechatMask.classList.add('is-visible');
+        document.body.style.overflow = 'hidden';
+      }
+      const button = document.querySelector('#download-button');
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const url =
+        isIOS && DOWNLOAD_CONFIG.ios
+          ? DOWNLOAD_CONFIG.ios
+          : DOWNLOAD_CONFIG.android;
+      if (url)
+        button.addEventListener('click', () => {
+          window.location.href = url;
+        });
+      else {
+        button.setAttribute('aria-disabled', 'true');
+        button.addEventListener('click', () => alert('下载地址暂未配置'));
+      }
+    </script>
+  </body>
+</html>

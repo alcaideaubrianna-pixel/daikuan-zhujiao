@@ -1,4 +1,4 @@
-import { Provide } from '@midwayjs/core';
+import { Inject, Provide } from '@midwayjs/core';
 import { BaseService, CoolCommException } from '@cool-midway/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { MoreThan, Repository } from 'typeorm';
@@ -7,6 +7,7 @@ import { randomUUID } from 'crypto';
 import { SupportConversationEntity } from '../entity/support-conversation';
 import { SupportMessageEntity } from '../entity/support-message';
 import { UserInfoEntity } from '../../user/entity/info';
+import { LoanTelegramService } from './telegram';
 
 @Provide()
 export class LoanSupportService extends BaseService {
@@ -16,6 +17,7 @@ export class LoanSupportService extends BaseService {
   messageRepo: Repository<SupportMessageEntity>;
   @InjectEntityModel(UserInfoEntity)
   userRepo: Repository<UserInfoEntity>;
+  @Inject() telegramService: LoanTelegramService;
 
   async conversation(userId: number) {
     let conversation = await this.conversationRepo.findOneBy({ userId });
@@ -54,6 +56,7 @@ export class LoanSupportService extends BaseService {
     const message = await this.messageRepo.save({ conversationId: conversation.id, senderType: 'staff', content: content?.trim() || '', messageType: attachment?.type || 'text', isRead: 0, attachmentUrl: attachment?.url, attachmentType: attachment?.type, attachmentName: attachment?.name });
     Object.assign(conversation, { lastMessage: content?.trim() || `[${attachment?.type === 'video' ? '视频' : '图片'}]`, lastMessageAt: moment().format('YYYY-MM-DD HH:mm:ss'), userUnread: conversation.userUnread + 1, staffUnread: 0 });
     await this.conversationRepo.save(conversation);
+    void this.telegramService.notify(conversation, { content: message.content, attachmentUrl: message.attachmentUrl, attachmentType: message.attachmentType });
     return message;
   }
 
@@ -96,6 +99,11 @@ export class LoanSupportService extends BaseService {
       staffUnread: conversation.staffUnread + 1,
     });
     await this.conversationRepo.save(conversation);
+    void this.telegramService.notify(conversation, {
+      content: message.content,
+      attachmentUrl: message.attachmentUrl,
+      attachmentType: message.attachmentType,
+    });
     return message;
   }
 

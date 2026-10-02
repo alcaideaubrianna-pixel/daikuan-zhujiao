@@ -11,32 +11,33 @@ import * as entity8 from './modules/recycle/entity/data';
 import * as entity9 from './modules/plugin/entity/info';
 import * as entity10 from './modules/loan/entity/user-credit';
 import * as entity11 from './modules/loan/entity/user-bank-card';
-import * as entity12 from './modules/loan/entity/support-message';
-import * as entity13 from './modules/loan/entity/support-conversation';
-import * as entity14 from './modules/loan/entity/review-log';
-import * as entity15 from './modules/loan/entity/profile';
-import * as entity16 from './modules/loan/entity/page-content';
-import * as entity17 from './modules/loan/entity/notification';
-import * as entity18 from './modules/loan/entity/media';
-import * as entity19 from './modules/loan/entity/credit-config';
-import * as entity20 from './modules/loan/entity/bank';
-import * as entity21 from './modules/loan/entity/application';
-import * as entity22 from './modules/loan/entity/agreement';
-import * as entity23 from './modules/loan/entity/agreement-sign';
-import * as entity24 from './modules/dict/entity/type';
-import * as entity25 from './modules/dict/entity/info';
-import * as entity26 from './modules/demo/entity/goods';
-import * as entity27 from './modules/base/entity/base';
-import * as entity28 from './modules/base/entity/sys/user_role';
-import * as entity29 from './modules/base/entity/sys/user';
-import * as entity30 from './modules/base/entity/sys/role_menu';
-import * as entity31 from './modules/base/entity/sys/role_department';
-import * as entity32 from './modules/base/entity/sys/role';
-import * as entity33 from './modules/base/entity/sys/param';
-import * as entity34 from './modules/base/entity/sys/menu';
-import * as entity35 from './modules/base/entity/sys/log';
-import * as entity36 from './modules/base/entity/sys/department';
-import * as entity37 from './modules/base/entity/sys/conf';
+import * as entity12 from './modules/loan/entity/telegram-config';
+import * as entity13 from './modules/loan/entity/support-message';
+import * as entity14 from './modules/loan/entity/support-conversation';
+import * as entity15 from './modules/loan/entity/review-log';
+import * as entity16 from './modules/loan/entity/profile';
+import * as entity17 from './modules/loan/entity/page-content';
+import * as entity18 from './modules/loan/entity/notification';
+import * as entity19 from './modules/loan/entity/media';
+import * as entity20 from './modules/loan/entity/credit-config';
+import * as entity21 from './modules/loan/entity/bank';
+import * as entity22 from './modules/loan/entity/application';
+import * as entity23 from './modules/loan/entity/agreement';
+import * as entity24 from './modules/loan/entity/agreement-sign';
+import * as entity25 from './modules/dict/entity/type';
+import * as entity26 from './modules/dict/entity/info';
+import * as entity27 from './modules/demo/entity/goods';
+import * as entity28 from './modules/base/entity/base';
+import * as entity29 from './modules/base/entity/sys/user_role';
+import * as entity30 from './modules/base/entity/sys/user';
+import * as entity31 from './modules/base/entity/sys/role_menu';
+import * as entity32 from './modules/base/entity/sys/role_department';
+import * as entity33 from './modules/base/entity/sys/role';
+import * as entity34 from './modules/base/entity/sys/param';
+import * as entity35 from './modules/base/entity/sys/menu';
+import * as entity36 from './modules/base/entity/sys/log';
+import * as entity37 from './modules/base/entity/sys/department';
+import * as entity38 from './modules/base/entity/sys/conf';
 export const entities = [
   ...Object.values(entity0),
   ...Object.values(entity1),
@@ -76,4 +77,5 @@ export const entities = [
   ...Object.values(entity35),
   ...Object.values(entity36),
   ...Object.values(entity37),
+  ...Object.values(entity38),
 ];

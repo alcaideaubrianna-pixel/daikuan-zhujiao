@@ -2,6 +2,6 @@ import { type ModuleConfig } from '/@/cool';
 
 export default (): ModuleConfig => ({
 	ignore: { token: ['/support/public'] },
-	views: [{ path: '/loan/support', meta: { label: '客服工作台' }, component: () => import('./views/support.vue') }],
+	views: [{ path: '/loan/support', meta: { label: '客服工作台' }, component: () => import('./views/support.vue') }, { path: '/loan/telegram', meta: { label: 'Telegram 通知' }, component: () => import('./views/telegram.vue') }],
 	pages: [{ path: '/support/public', meta: { label: '客服会话', process: false }, component: () => import('./views/support-public.vue') }]
 });

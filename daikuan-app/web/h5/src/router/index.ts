@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import LoginView from '../views/LoginView.vue'
 import { useLoanStore } from '../stores/loan'
 import { AUTH_EXPIRED_EVENT } from '../api/client'
 
@@ -7,7 +8,9 @@ const router = createRouter({
   routes: [
     { path: '/', redirect: '/login' },
     { path: '/home', component: () => import('../views/HomeView.vue') },
-    { path: '/login', component: () => import('../views/LoginView.vue') },
+    // Keep the first screen in the entry chunk so a stale HMR module cannot
+    // leave the app blank before the development server serves lazy chunks.
+    { path: '/login', component: LoginView },
     { path: '/auth', component: () => import('../views/AuthCenterView.vue') },
     { path: '/materials/:type', component: () => import('../views/MaterialUploadView.vue') },
     { path: '/iou-template', component: () => import('../views/IouTemplateView.vue') },
